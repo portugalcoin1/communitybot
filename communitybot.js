@@ -154,6 +154,18 @@ function voteNext() {
 					continue;
 				}
 
+        // - portugalcoin
+        const last = member.last_trans || -1;
+        const last_day = member.last_day || 0;
+
+        // Get today timestamp  - portugalcoin
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf();
+
+        // Is this post in available daily auto bids -- portugalcoin
+        const auto_vote = member.last_day === today ? member.auto_vote : 0;
+        if (config.daily_vote < auto_vote) return;
+
 				// Check if any tags on this post are blacklisted in the settings
 				if ((config.blacklisted_tags && config.blacklisted_tags.length > 0) || (config.whitelisted_tags && config.whitelisted_tags.length > 0) && post.json_metadata && post.json_metadata != '') {
 					var tags = JSON.parse(post.json_metadata).tags;
@@ -177,7 +189,12 @@ function voteNext() {
 					}
 				}
 
-				sendVote(post, 0);
+        //portugalcoin
+        //member.last_trans = trans[0];
+        member.last_day = today;
+        member.auto_vote = auto_vote + 1;
+
+        sendVote(post, 0);
 				break;
 			}
 
