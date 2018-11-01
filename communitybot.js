@@ -129,6 +129,9 @@ function getNextActiveMember(loop_count) {
 function voteNext() {
   var member = getNextActiveMember();
 
+  //lets go to vote? - portugalcoin
+  utils.log("Passou aqui");
+
   if(member == null)
     return;
 
