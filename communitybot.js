@@ -117,7 +117,7 @@ function getNextActiveMember(loop_count) {
 	}
 
   // Check if this member's membership is active
-  if(member.full_delegation || new Date(member.valid_thru) > new Date()) {
+  if(new Date(member.valid_thru) > new Date()) {
     return member;
   } else {
     last_voted++;
