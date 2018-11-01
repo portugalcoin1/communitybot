@@ -96,8 +96,13 @@ function startProcess() {
 }
 
 function getNextActiveMember(loop_count) {
+
+ utils.log("loop count -> " + loop_count);
+
 	if(!loop_count)
 		loop_count = 0;
+
+utils.log("members.length -> " + members.length);
 
 	if(loop_count == members.length)
 		return null;
@@ -116,6 +121,8 @@ function getNextActiveMember(loop_count) {
 		utils.log('Member @' + member.name + ' is no longer on the whitelist, skipping...');
 		return getNextActiveMember(loop_count + 1);
 	}
+
+  utils.log("Date -> " + new Date());
 
   // Check if this member's membership is active
   if(new Date(member.valid_thru) > new Date()) {
