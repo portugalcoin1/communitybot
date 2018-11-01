@@ -139,7 +139,7 @@ function voteNext() {
   var member = getNextActiveMember();
 
   //lets go to vote? - portugalcoin
-  utils.log("Passou aqui");
+  utils.log("Passou aqui -> " + member);
 
   if(member == null)
     return;
