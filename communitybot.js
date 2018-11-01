@@ -461,8 +461,8 @@ function sendPayment(to, amount, currency, reason, retries, data) {
     } else {
       utils.log('Payment of ' + amount + ' ' + currency + ' sent to @' + to + ' for reason: ' + reason);
     }
-  });
-}*/
+  });*/
+}
 
 function claimRewards() {
   if (!config.auto_claim_rewards)
