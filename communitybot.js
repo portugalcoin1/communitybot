@@ -50,6 +50,10 @@ if (fs.existsSync('state.json')) {
 // Check if members list has been saved to disk, in which case load it
 if (fs.existsSync('members.json')) {
   var members_file = JSON.parse(fs.readFileSync("members.json"));
+
+  //List all members log - portugalcoin
+  utils.log('Loaded members list' + members_file);
+
   members = members_file.members;
 	utils.log('Loaded ' + members.length + ' members.');
 }
