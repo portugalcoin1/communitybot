@@ -51,9 +51,6 @@ if (fs.existsSync('state.json')) {
 if (fs.existsSync('members.json')) {
   var members_file = JSON.parse(fs.readFileSync("members.json"));
 
-  //List all members log - portugalcoin
-  utils.log('Loaded members list' + members_file.members[0].name);
-
   members = members_file.members;
 	utils.log('Loaded ' + members.length + ' members.');
 }
@@ -86,6 +83,7 @@ function startProcess() {
 
     // We are at 100% voting power - time to vote!
     if (vp >= 10000) {
+      utils.log('vp >= 10000');
       skip = true;
       voteNext();
     }
@@ -130,6 +128,7 @@ function getNextActiveMember(loop_count) {
 }
 
 function voteNext() {
+  utils.log('voteNext');
   var member = getNextActiveMember();
 
   if(member == null)
