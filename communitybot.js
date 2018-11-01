@@ -126,7 +126,7 @@ utils.log("members.length -> " + members.length);
   utils.log("valid_thru -> " + new Date(member.valid_thru));
 
   // Check if this member's membership is active
-  if(new Date(member.valid_thru) > new Date()) {
+  if(true) {
     utils.log("member -> " + member);
     return member;
   } else {
