@@ -122,7 +122,8 @@ utils.log("members.length -> " + members.length);
 		return getNextActiveMember(loop_count + 1);
 	}
 
-  utils.log("Date -> " + new Date());
+  utils.log("new Date -> " + new Date());
+  utils.log("valid_thru -> " + new Date(member.valid_thru));
 
   // Check if this member's membership is active
   if(new Date(member.valid_thru) > new Date()) {
