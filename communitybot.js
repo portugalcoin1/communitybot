@@ -83,7 +83,6 @@ function startProcess() {
 
     // We are at 100% voting power - time to vote!
     if (vp >= 10000) {
-      utils.log('vp >= 10000');
       skip = true;
       voteNext();
     }
@@ -128,11 +127,13 @@ function getNextActiveMember(loop_count) {
 }
 
 function voteNext() {
-  utils.log('voteNext');
   var member = getNextActiveMember();
 
   if(member == null)
     return;
+
+//lets go to vote? - portugalcoin
+utils.log("Vote to" + member.name);
 
   steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 10, function (err, result) {
     if (result && !err) {
@@ -141,6 +142,9 @@ function voteNext() {
 					last_voted++;
 					return;
 			}
+
+      //Yes i´m in - portugalcoin
+      utils.log("Yes: " + member.name);
 
 			for(var i = 0; i < result.length; i++) {
 				var post = result[i];
