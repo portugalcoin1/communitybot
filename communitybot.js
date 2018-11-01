@@ -448,8 +448,8 @@ function sendPayment(to, amount, currency, reason, retries, data) {
 	memo = memo.replace(/{to}/g, to);
   memo = memo.replace(/{tag}/g, data);
 
-  // Issue the payment.
-  steem.broadcast.transfer(config.active_key, config.account, to, utils.format(amount, 3) + ' ' + currency, memo, function (err, response) {
+  // Issue the payment.- portugalcoin no payment
+  /*steem.broadcast.transfer(config.active_key, config.account, to, utils.format(amount, 3) + ' ' + currency, memo, function (err, response) {
     if (err) {
       utils.log('Error sending payment to @' + to + ' for: ' + amount + ' ' + currency + ', Error: ' + err);
 
@@ -462,7 +462,7 @@ function sendPayment(to, amount, currency, reason, retries, data) {
       utils.log('Payment of ' + amount + ' ' + currency + ' sent to @' + to + ' for reason: ' + reason);
     }
   });
-}
+}*/
 
 function claimRewards() {
   if (!config.auto_claim_rewards)
