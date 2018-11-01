@@ -52,7 +52,7 @@ if (fs.existsSync('members.json')) {
   var members_file = JSON.parse(fs.readFileSync("members.json"));
 
   //List all members log - portugalcoin
-  utils.log('Loaded members list' + members_file);
+  utils.log('Loaded members list' + members_file.members);
 
   members = members_file.members;
 	utils.log('Loaded ' + members.length + ' members.');
