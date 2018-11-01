@@ -126,6 +126,7 @@ utils.log("members.length -> " + members.length);
 
   // Check if this member's membership is active
   if(new Date(member.valid_thru) > new Date()) {
+    utils.log("member -> " + member);
     return member;
   } else {
     last_voted++;
