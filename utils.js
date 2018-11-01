@@ -49,7 +49,9 @@ var HOURS = 60 * 60;
 
          var effective_vesting_shares = Math.round(getVestingShares(account) * 1000000);
          var voting_power = account.voting_power;
+         utils.log("voteWeight -> " + voteWeight);
          var weight = voteWeight * 100;
+         utils.log("weight -> " + weight);
          var last_vote_time = new Date((account.last_vote_time) + 'Z');
 
 
@@ -95,7 +97,7 @@ function timeTilFullPower(cur_power){
  function getCurrency(amount) {
    return amount.substr(amount.indexOf(' ') + 1);
  }
- 
+
  function loadUserList(location, callback) {
   if(!location) {
     if(callback)
