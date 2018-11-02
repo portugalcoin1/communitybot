@@ -69,8 +69,6 @@ function startProcess() {
     else {
       account = result[0];
 
-      // Check if there are any rewards to claim.
-      //claimRewards();
     }
   });
 
@@ -122,30 +120,15 @@ utils.log("members.length -> " + members.length);
 		return getNextActiveMember(loop_count + 1);
 	}
 
-  utils.log("new Date -> " + new Date());
-  utils.log("valid_thru -> " + new Date(member.valid_thru));
-
-  // Check if this member's membership is active
-  if(true) {
-    utils.log("member -> " + member);
     return member;
-  } else {
-    last_voted++;
-    return getNextActiveMember(loop_count + 1);
-  }
+
 }
 
 function voteNext() {
   var member = getNextActiveMember();
 
-  //lets go to vote? - portugalcoin
-  utils.log("Passou aqui -> " + member);
-
   if(member == null)
     return;
-
-//lets go to vote? - portugalcoin
-utils.log("Vote to" + member.name);
 
   steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 10, function (err, result) {
     if (result && !err) {
@@ -154,9 +137,6 @@ utils.log("Vote to" + member.name);
 					last_voted++;
 					return;
 			}
-
-      //Yes i´m in - portugalcoin
-      utils.log("Yes: " + member.name);
 
 			for(var i = 0; i < result.length; i++) {
 				var post = result[i];
@@ -230,9 +210,6 @@ function sendVote(post, retries) {
   if(account.full_delegation == false){
     config.vote_weight = 1000;
     utils.log('Member vote weight: ' + config.vote_weight);
-  }else{
-    config.vote_weight = 2000;
-    utils.log('Delegator vote weight: ' + config.vote_weight);
   }
 
   steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, config.vote_weight, function (err, result) {
@@ -361,11 +338,6 @@ function getTransactions() {
 }
 
 function updateMember(name, payment, vesting_shares) {
-	// If whitelist_only is enabled, check if the new member is on the whitelist
-	if(config.whitelist_only && whitelist.indexOf(name) < 0) {
-		sendPayment(name, (payment > 0) ? payment : 0.001, 'STEEM', 'whitelist_only');
-		return;
-	}
 
   var member = members.find(m => m.name == name);
 
@@ -401,9 +373,8 @@ function updateMember(name, payment, vesting_shares) {
     member.valid_thru = new Date(valid_thru.valueOf() + extension).toISOString();
 
     utils.log('Member ' + name + ' valid through: ' + member.valid_thru);
-		sendPayment(name, 0.001, 'STEEM', 'member_valid_thru', 0, new Date(valid_thru.valueOf() + extension).toDateString());
+
   } else
-		sendPayment(name, 0.001, 'STEEM', 'member_full_delegation', 0);
 
   saveMembers();
 }
@@ -456,75 +427,4 @@ function saveMembers() {
     if (err)
       utils.log(err);
   });
-}
-
-function sendPayment(to, amount, currency, reason, retries, data) {
-  if(!retries)
-    retries = 0;
-
-  // Make sure the recipient isn't on the no-refund list (for exchanges and things like that).
-  if (reason != 'forward_payment' && config.no_refund && config.no_refund.indexOf(to) >= 0) {
-    utils.log("Payment not sent to: @" + to + " for: " + reason + ' because they are on the no_refund list.');
-    return;
-  }
-
-  // Replace variables in the memo text
-  var memo = config.transfer_memos[reason];
-  memo = memo.replace(/{amount}/g, utils.format(amount, 3) + ' ' + currency);
-  memo = memo.replace(/{currency}/g, currency);
-  memo = memo.replace(/{account}/g, config.account);
-	memo = memo.replace(/{to}/g, to);
-  memo = memo.replace(/{tag}/g, data);
-
-  // Issue the payment.- portugalcoin no payment
-  /*steem.broadcast.transfer(config.active_key, config.account, to, utils.format(amount, 3) + ' ' + currency, memo, function (err, response) {
-    if (err) {
-      utils.log('Error sending payment to @' + to + ' for: ' + amount + ' ' + currency + ', Error: ' + err);
-
-      // Try again on error
-      if(retries < 2)
-        setTimeout(function() { refund(to, amount, currency, reason, retries + 1, data) }, (Math.floor(Math.random() * 10) + 3) * 1000);
-      else
-        utils.log('============= Payment failed three times for: @' + to + ' ===============');
-    } else {
-      utils.log('Payment of ' + amount + ' ' + currency + ' sent to @' + to + ' for reason: ' + reason);
-    }
-  });*/
-}
-
-function claimRewards() {
-  if (!config.auto_claim_rewards)
-    return;
-
-  // Make api call only if you have actual reward
-  if (parseFloat(account.reward_steem_balance) > 0 || parseFloat(account.reward_sbd_balance) > 0 || parseFloat(account.reward_vesting_balance) > 0) {
-    steem.broadcast.claimRewardBalance(config.posting_key, config.account, account.reward_steem_balance, account.reward_sbd_balance, account.reward_vesting_balance, function (err, result) {
-      if (err) {
-        utils.log(err);
-      }
-
-      if (result) {
-
-        var rewards_message = "$$$ ==> Rewards Claim";
-        if (parseFloat(account.reward_sbd_balance) > 0) { rewards_message = rewards_message + ' SBD: ' + parseFloat(account.reward_sbd_balance); }
-        if (parseFloat(account.reward_steem_balance) > 0) { rewards_message = rewards_message + ' STEEM: ' + parseFloat(account.reward_steem_balance); }
-        if (parseFloat(account.reward_vesting_balance) > 0) { rewards_message = rewards_message + ' VESTS: ' + parseFloat(account.reward_vesting_balance); }
-
-        utils.log(rewards_message);
-
-        // If there are liquid post rewards, withdraw them to the specified account
-        if (parseFloat(account.reward_sbd_balance) > 0 && config.post_rewards_withdrawal_account && config.post_rewards_withdrawal_account != '') {
-
-          // Send liquid post rewards to the specified account
-          steem.broadcast.transfer(config.active_key, config.account, config.post_rewards_withdrawal_account, account.reward_sbd_balance, 'Liquid Post Rewards Withdrawal', function (err, response) {
-            if (err)
-              utils.log(err, response);
-            else {
-              utils.log('$$$ Auto withdrawal - liquid post rewards: ' + account.reward_sbd_balance + ' sent to @' + config.post_rewards_withdrawal_account);
-            }
-          });
-        }
-      }
-    });
-  }
 }
