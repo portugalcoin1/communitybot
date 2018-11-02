@@ -228,7 +228,11 @@ function sendVote(post, retries) {
 
   //If it is not delegator receives half of the value. - portugalcoin
   if(account.full_delegation == false){
-    config.vote_weight = 5000;
+    config.vote_weight = 1000;
+    utils.log('Member vote weight: ' + config.vote_weight);
+  }else{
+    config.vote_weight = 2000;
+    utils.log('Delegator vote weight: ' + config.vote_weight);
   }
 
   steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, config.vote_weight, function (err, result) {
