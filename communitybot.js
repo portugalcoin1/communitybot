@@ -210,10 +210,10 @@ function sendVote(name, post, retries) {
   if(member.vesting_shares > 0){
     var sp_value = (member.vesting_shares * 489) / 1000000;
     utils.log('SP Value: ' + sp_value);
-    config.vote_weight = 5000;
+    config.vote_weight = 800;
     utils.log('Member vote weight: ' + config.vote_weight);
   }else{
-    config.vote_weight = 1000;
+    config.vote_weight = 500;
   }
 
   steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, config.vote_weight, function (err, result) {
