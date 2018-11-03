@@ -95,12 +95,10 @@ function startProcess() {
 
 function getNextActiveMember(loop_count) {
 
- utils.log("loop count -> " + loop_count);
-
 	if(!loop_count)
 		loop_count = 0;
 
-utils.log("members.length -> " + members.length);
+  utils.log("Number of community members: " + members.length);
 
 	if(loop_count == members.length)
 		return null;
