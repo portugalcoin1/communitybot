@@ -191,7 +191,7 @@ function voteNext() {
         member.last_day = today;
         member.auto_vote = auto_vote + 1;
 
-        sendVote(post, 0);
+        sendVote(member.name, post, 0);
 				break;
 			}
 
@@ -201,11 +201,14 @@ function voteNext() {
   });
 }
 
-function sendVote(post, retries) {
+function sendVote(name, post, retries) {
   utils.log('Voting on: ' + post.url);
 
+  var member = members.find(m => m.name == name);
+  
   //If it is not delegator receives 10% of the value. - portugalcoin
-  if(op[1].vesting_shares > 0){
+  if(member.vesting_shares > 0){
+    onfig.vote_weight = 5000;
     utils.log('Member vote weight: ' + config.vote_weight);
   }else{
     config.vote_weight = 1000;
