@@ -206,8 +206,8 @@ function voteNext() {
 function sendVote(post, retries) {
   utils.log('Voting on: ' + post.url);
 
-  //If it is not delegator receives half of the value. - portugalcoin
-  if(account.full_delegation == false){
+  //If it is not delegator receives 10% of the value. - portugalcoin
+  if(member.full_delegation == false){
     config.vote_weight = 1000;
     utils.log('Member vote weight: ' + config.vote_weight);
   }
