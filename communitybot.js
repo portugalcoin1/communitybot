@@ -205,10 +205,12 @@ function sendVote(name, post, retries) {
   utils.log('Voting on: ' + post.url);
 
   var member = members.find(m => m.name == name);
-  
+
   //If it is not delegator receives 10% of the value. - portugalcoin
   if(member.vesting_shares > 0){
-    onfig.vote_weight = 5000;
+    var sp_value = (member.vesting_shares * 489) / 1000000;
+    utils.log('SP Value: ' + sp_value);
+    config.vote_weight = 5000;
     utils.log('Member vote weight: ' + config.vote_weight);
   }else{
     config.vote_weight = 1000;
