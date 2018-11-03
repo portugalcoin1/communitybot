@@ -116,7 +116,9 @@ function getNextActiveMember(loop_count) {
 		last_voted++;
 		utils.log('Member @' + member.name + ' is no longer on the whitelist, skipping...');
 		return getNextActiveMember(loop_count + 1);
-	}
+	}else{
+    last_voted++;
+  }
 
     return member;
 
