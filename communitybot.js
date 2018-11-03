@@ -116,10 +116,7 @@ function getNextActiveMember(loop_count) {
 		last_voted++;
 		utils.log('Member @' + member.name + ' is no longer on the whitelist, skipping...');
 		return getNextActiveMember(loop_count + 1);
-	}else{
-    last_voted++;
-  }
-
+	}
     return member;
 
 }
@@ -194,6 +191,7 @@ function voteNext() {
         member.auto_vote = auto_vote + 1;
 
         sendVote(member.name, post, 0);
+        setTimeout(function () { getNextActiveMember(last_voted + 1 ); }, 5000);
 				break;
 			}
 
