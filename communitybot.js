@@ -87,6 +87,8 @@ function startProcess() {
 
     getTransactions();
 
+    getMembersPosts();
+
     // Save the state of the bot to disk.
     saveState();
   } else if(skip)
@@ -325,13 +327,74 @@ function getTransactions() {
   });
 }
 
+function getMembersPosts(callback) {
+  // Go through delegators and get their latest posts
+  members.map(meb => {
+    // Ignore small delegators
+    if (parseFloat(mem.vesting_shares) < config.delegators_min_vests) return deleg;
+
+    // Get this delegator account history
+    steem.api.getAccountHistory(account.name, -1, 50, (err, result) => {
+      if (err || !result) {
+        logError('Error loading delegator account history: ' + err);
+
+        if (callback)
+          callback();
+
+        return;
+      }
+
+      result.reverse();
+
+      // Go through the result and find post transactions
+      result.map(trans => {
+        const last = memb.last_trans || -1;
+        const last_day = memb.last_day || 0;
+
+        // Get today timestamp
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf();
+
+        // Is this new?
+        if (trans[0] <= last) return;
+
+        // Is this post in available daily auto bids
+        const auto_vote = memb.last_day === today ? memb.auto_vote : 0;
+        if (config.daily_auto_vote < auto_vote) return;
+
+        const op = trans[1].op;
+
+        // Get only own root posts
+        if (op[0] === "comment" && op[1].author === account.name && op[1].parent_author === '') {
+          const author = op[1].author;
+          const permlink = op[1].permlink;
+
+          // Save this as last transaction
+          memb.last_trans = trans[0];
+          memb.last_day = today;
+          memb.auto_vote = auto_vote + 1;
+        }
+      });
+    });
+
+    return memb;
+  });
+
+  // Save the updated list of delegators to disk
+  saveMembers();
+
+  // To comply with existing pattern...
+  if (callback)
+    callback();
+}
+
 function updateMember(name, payment, vesting_shares) {
 
   var member = members.find(m => m.name == name);
 
   // Add a new member if none is found
   if (!member) {
-    member = { name: name, valid_thru: null, vesting_shares: 0, total_dues: 0, joined: new Date(), sponsoring: [], sponsor: null };
+    member = { name: name, valid_thru: null, vesting_shares: 0, total_dues: 0, joined: new Date(), sponsoring: [], sponsor: null, last_trans:0, last_day:0, auto_vote: 0 };
     members.push(member);
     utils.log('Added new member: ' + name);
   }
