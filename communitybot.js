@@ -80,7 +80,7 @@ function startProcess() {
       utils.log('Voting Power: ' + utils.format(vp / 100) + '% | Time until next vote: ' + utils.toTimer(utils.timeTilFullPower(vp)));
 
     // We are at 100% voting power - time to vote!
-    if (vp >= 10000) {
+    if (vp >= 6000) {
       skip = true;
       voteNext();
     }
@@ -211,10 +211,10 @@ function sendVote(name, post, retries) {
   if(member.vesting_shares > 0){
     var sp_value = (member.vesting_shares * 489) / 1000000;
     utils.log('SP Value: ' + sp_value);
-    config.vote_weight = 800;
+    config.vote_weight = 200;
     utils.log('Member vote weight: ' + config.vote_weight);
   }else{
-    config.vote_weight = 500;
+    config.vote_weight = 100;
   }
 
   steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, config.vote_weight, function (err, result) {
@@ -234,11 +234,6 @@ function sendVote(name, post, retries) {
       }
     }
   });
-
-utils.log('Chegou aqui: ' + last_voted);
-
-setTimeout(function () { getNextActiveMember(last_voted + 1 ); }, 5000);
-
 }
 
 function sendComment(parentAuthor, parentPermlink) {
