@@ -360,7 +360,9 @@ function getMembersPosts(callback) {
 
         // Is this post in available daily auto bids
         const auto_vote = memb.last_day === today ? memb.auto_vote : 0;
-        if (config.daily_auto_vote < auto_vote) return;
+        if (config.daily_vote < auto_vote) return;
+
+        utils.log('*** Auto Vote: ' + auto_vote);
 
         const op = trans[1].op;
 
@@ -373,6 +375,9 @@ function getMembersPosts(callback) {
           memb.last_trans = trans[0];
           memb.last_day = today;
           memb.auto_vote = auto_vote + 1;
+
+          utils.log('*** Last day: ' + memb.last_day);
+          utils.log('*** Member Auto Vote: ' + memb.auto_vote);
         }
       });
     });
