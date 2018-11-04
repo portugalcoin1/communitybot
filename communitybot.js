@@ -83,10 +83,12 @@ function startProcess() {
     if (vp >= 6000) {
       skip = true;
 
-      var memb = getMembersPosts();
+      getMembersPosts();
 
-      utils.log("Member Auto Vote is: " + memb.auto_vote);
-      if(memb.auto_vote < 1){
+      var member = members.find(m => m.name == name);
+
+      utils.log("Member Auto Vote is: " + member.auto_vote);
+      if(member.auto_vote < 1){
         voteNext();
       }
 
