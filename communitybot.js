@@ -149,7 +149,7 @@ utils.log("Loop Count: " + loop_count);
             member.auto_bids = auto_bids + 1;
           }
         });
-      });
+
 
 
 
