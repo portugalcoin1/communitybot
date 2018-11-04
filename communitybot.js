@@ -83,18 +83,17 @@ function startProcess() {
     if (vp >= 6000) {
       skip = true;
 
-      getMembersPosts();
-
-      //var member = members.find(m => m.name == name);
-
-      //utils.log("Member Auto Vote is: " + member.auto_vote);
-      //if(member.auto_vote < 1){
-        voteNext();
-      //}
+      var member = members.find(m => m.name == account.name);
+      
+      if(members.auto_vote < 1){
+          voteNext();
+      }
 
     }
 
     getTransactions();
+
+    getMembersPosts();
 
     // Save the state of the bot to disk.
     saveState();
