@@ -331,12 +331,12 @@ function getMembersPosts(callback) {
   // Go through delegators and get their latest posts
   members.map(memb => {
     // Ignore small delegators
-    if (parseFloat(mem.vesting_shares) < config.delegators_min_vests) return memb;
+    if (parseFloat(memb.vesting_shares) < config.delegators_min_vests) return memb;
 
     // Get this delegator account history
     steem.api.getAccountHistory(account.name, -1, 50, (err, result) => {
       if (err || !result) {
-        logError('Error loading delegator account history: ' + err);
+        logError('Error loading member account history: ' + err);
 
         if (callback)
           callback();
