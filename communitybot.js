@@ -85,12 +85,12 @@ function startProcess() {
 
       getMembersPosts();
 
-      var member = members.find(m => m.name == name);
+      //var member = members.find(m => m.name == name);
 
-      utils.log("Member Auto Vote is: " + member.auto_vote);
-      if(member.auto_vote < 1){
+      //utils.log("Member Auto Vote is: " + member.auto_vote);
+      //if(member.auto_vote < 1){
         voteNext();
-      }
+      //}
 
     }
 
