@@ -366,19 +366,14 @@ function getMembersPosts(callback) {
 
         const op = trans[1].op;
 
-        // Get only own root posts
-        if (op[0] === "comment" && op[1].author === account.name && op[1].parent_author === '') {
-          const author = op[1].author;
-          const permlink = op[1].permlink;
-
           // Save this as last transaction
-          memb.last_trans = trans[0];
-          memb.last_day = today;
-          memb.auto_vote = auto_vote + 1;
+        memb.last_trans = trans[0];
+        memb.last_day = today;
+        memb.auto_vote = auto_vote + 1;
 
-          utils.log('*** Last day: ' + memb.last_day);
-          utils.log('*** Member Auto Vote: ' + memb.auto_vote);
-        }
+        utils.log('*** Last day: ' + memb.last_day);
+        utils.log('*** Member Auto Vote: ' + memb.auto_vote);
+
       });
     });
 
