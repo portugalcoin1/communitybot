@@ -82,11 +82,7 @@ function startProcess() {
     // We are at 60% voting power - time to vote!
     if (vp >= 6000) {
       skip = true;
-
-      if(member.auto_vote < 1){
-          voteNext();
-      }
-
+      voteNext();
     }
 
     getTransactions();
