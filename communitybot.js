@@ -129,7 +129,7 @@ function voteNext() {
   if(member == null)
     return;
 
-  steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 10, function (err, result) {
+  steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 1, function (err, result) {
     if (result && !err) {
 			if(result.length == 0 || !result[0]) {
 					utils.log('No posts found for this account: ' + member.name);
@@ -140,8 +140,8 @@ function voteNext() {
 			for(var i = 0; i < result.length; i++) {
 				var post = result[i];
 
-				// Make sure the post is less than 6.5 days old
-				if((new Date() - new Date(post.created + 'Z')) >= (6.5 * 24 * 60 * 60 * 1000)) {
+				// Make sure the post is less than 1 days old
+				if((new Date() - new Date(post.created + 'Z')) >= (1 * 24 * 60 * 60 * 1000)) {
 					utils.log('This post is too old for a vote: ' + post.url);
 					continue;
 				}
@@ -151,18 +151,6 @@ function voteNext() {
 					utils.log('Bot already voted on: ' + post.url);
 					continue;
 				}
-
-        // - portugalcoin
-        const last = member.last_trans || -1;
-        const last_day = member.last_day || 0;
-
-        // Get today timestamp  - portugalcoin
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf();
-
-        // Is this post in available daily auto bids -- portugalcoin
-        const auto_vote = member.last_day === today ? member.auto_vote : 0;
-        if (config.daily_vote < auto_vote) return;
 
 				// Check if any tags on this post are blacklisted in the settings
 				if ((config.blacklisted_tags && config.blacklisted_tags.length > 0) || (config.whitelisted_tags && config.whitelisted_tags.length > 0) && post.json_metadata && post.json_metadata != '') {
@@ -186,11 +174,6 @@ function voteNext() {
 						continue;
 					}
 				}
-
-        //portugalcoin
-        //member.last_trans = trans[0];
-        member.last_day = today;
-        member.auto_vote = auto_vote + 1;
 
         sendVote(member.name, post, 0);
 				break;
