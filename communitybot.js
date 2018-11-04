@@ -329,9 +329,9 @@ function getTransactions() {
 
 function getMembersPosts(callback) {
   // Go through delegators and get their latest posts
-  members.map(meb => {
+  members.map(memb => {
     // Ignore small delegators
-    if (parseFloat(mem.vesting_shares) < config.delegators_min_vests) return deleg;
+    if (parseFloat(mem.vesting_shares) < config.delegators_min_vests) return memb;
 
     // Get this delegator account history
     steem.api.getAccountHistory(account.name, -1, 50, (err, result) => {
