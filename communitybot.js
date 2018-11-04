@@ -165,6 +165,7 @@ utils.log("Loop Count: " + loop_count);
         // Save the ID of the last transaction that was processed.
         last_trans = trans[0];
       }
+     }
     });
 
     return member;
