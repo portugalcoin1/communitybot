@@ -48,12 +48,12 @@ if (fs.existsSync('state.json')) {
 }
 
 // Check if members list has been saved to disk, in which case load it
-if (fs.existsSync('members.json')) {
+/*if (fs.existsSync('members.json')) {
   var members_file = JSON.parse(fs.readFileSync("members.json"));
 
   members = members_file.members;
 	utils.log('Loaded ' + members.length + ' members.');
-}
+}*/
 
 // Schedule to run every minute
 setInterval(startProcess, 60 * 1000);
