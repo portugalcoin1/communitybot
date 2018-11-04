@@ -95,6 +95,8 @@ function startProcess() {
 
 function getNextActiveMember(loop_count) {
 
+utils.log("Loop Count: " + loop_count);
+
 	if(!loop_count)
 		loop_count = 0;
 
@@ -191,7 +193,6 @@ function voteNext() {
         member.auto_vote = auto_vote + 1;
 
         sendVote(member.name, post, 0);
-        setTimeout(function () { getNextActiveMember(last_voted + 1 ); }, 5000);
 				break;
 			}
 
@@ -233,6 +234,9 @@ function sendVote(name, post, retries) {
       }
     }
   });
+
+setTimeout(function () { getNextActiveMember(last_voted + 1 ); }, 5000);
+
 }
 
 function sendComment(parentAuthor, parentPermlink) {
