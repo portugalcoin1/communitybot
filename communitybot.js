@@ -235,6 +235,8 @@ function sendVote(name, post, retries) {
     }
   });
 
+utils.log('Chegou aqui: ' + last_voted);
+
 setTimeout(function () { getNextActiveMember(last_voted + 1 ); }, 5000);
 
 }
