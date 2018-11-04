@@ -87,7 +87,7 @@ function startProcess() {
 
     getTransactions();
 
-    getMembersPosts();
+    //getMembersPosts();
 
     // Save the state of the bot to disk.
     saveState();
