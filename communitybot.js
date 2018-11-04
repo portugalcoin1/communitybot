@@ -120,6 +120,53 @@ utils.log("Loop Count: " + loop_count);
 		return getNextActiveMember(loop_count + 1);
 	}
 
+ //portugalcoin
+  steem.api.getAccountHistory(member.name, -1, num_trans, function (err, result) {
+    first_load = false;
+
+    if (err || !result) {
+      utils.log(err, result);
+      return;
+    }
+
+    result.forEach(function (trans) {
+      var op = trans[1].op;
+
+      // Check that this is a new transaction that we haven't processed already
+      if (trans[0] > last_trans) {
+
+        const last = member.last_trans || -1;
+        const last_day = member.last_day || 0;
+
+        // Get today timestamp
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf();
+
+        // Is this new?
+        if (trans[0] <= last) return;
+
+        // Is this post in available daily auto bids
+        const auto_vote = member.last_day === today ? member.auto_vote : 0;
+        utils.log("Auto Vote: " +  auto_vote);
+        if (config.daily_vote < auto_vote) return;
+
+        const op = trans[1].op;
+
+        // Get only own root posts
+        if (op[0] === "comment" && op[1].author === deleg.delegator && op[1].parent_author === '') {
+          const author = op[1].author;
+          const permlink = op[1].permlink;
+
+          // Save this as last transaction
+          member.last_trans = trans[0];
+          member.last_day = today;
+          member.auto_bids = auto_vote + 1;
+
+        // Save the ID of the last transaction that was processed.
+        last_trans = trans[0];
+      }
+    });
+
     return member;
 
 }
