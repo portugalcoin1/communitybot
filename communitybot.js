@@ -167,7 +167,7 @@ utils.log("Loop Count: " + loop_count);
       }
      }
     });
-
+  });
     return member;
 
 }
