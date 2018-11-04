@@ -334,7 +334,7 @@ function getMembersPosts(callback) {
     if (parseFloat(memb.vesting_shares) < config.delegators_min_vests) return memb;
 
     // Get this delegator account history
-    steem.api.getAccountHistory(account.name, -1, 50, (err, result) => {
+    steem.api.getAccountHistory(account.name, -1, 1, (err, result) => {
       if (err || !result) {
         logError('Error loading member account history: ' + err);
 
