@@ -83,8 +83,6 @@ function startProcess() {
     if (vp >= 6000) {
       skip = true;
 
-      getMembersPosts();
-
       var member = members.find(m => m.name == name);
 
       if (member.auto_vote < 1){
@@ -94,6 +92,8 @@ function startProcess() {
     }
 
     getTransactions();
+
+    getMembersPosts();
 
     // Save the state of the bot to disk.
     saveState();
