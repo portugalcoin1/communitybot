@@ -241,9 +241,9 @@ function calculateUserVestingShares (user) {
   const vestingShares = parseFloat(parsePayoutAmount(user.vesting_shares));
   const receivedVestingShares = parseFloat(parsePayoutAmount(user.received_vesting_shares));
   const delegatedVestingShares = parseFloat(parsePayoutAmount(user.delegated_vesting_shares));
-  utils.log("vestingShares -> " + vestingShares );
-  utils.log("receivedVestingShares -> " + receivedVestingShares );
-  utils.log("delegatedVestingShares -> " + delegatedVestingShares );
+  utils.log("vestingShares -> " + user.vesting_shares );
+  utils.log("receivedVestingShares -> " + user.received_vesting_shares );
+  utils.log("delegatedVestingShares -> " + user.delegated_vesting_shares );
   return vestingShares + receivedVestingShares - delegatedVestingShares;
 }
 
