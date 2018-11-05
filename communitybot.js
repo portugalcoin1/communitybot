@@ -195,7 +195,7 @@ function sendVote(name, post, retries) {
 
   var account_member = "";
   // Load the account member info
-  steem.api.getAccounts(name, function (err, result) {
+  steem.api.getAccounts([member.name], function (err, result) {
     if (err || !result)
       console.log(err, result);
     else {
