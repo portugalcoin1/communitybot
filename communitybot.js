@@ -253,13 +253,20 @@ function parsePayoutAmount (amount) {
 
 function calculateTotalDelegatedSP (user, totalVestingShares, totalVestingFundSteem) {
      const receivedSP = parseFloat(
-       this.vestToSteem(user.received_vesting_shares, totalVestingShares, totalVestingFundSteem)
+       vestToSteem(user.received_vesting_shares, totalVestingShares, totalVestingFundSteem)
      )
      const delegatedSP = parseFloat(
-       this.vestToSteem(user.delegated_vesting_shares, totalVestingShares, totalVestingFundSteem)
+       vestToSteem(user.delegated_vesting_shares, totalVestingShares, totalVestingFundSteem)
      )
      return receivedSP - delegatedSP
 }
+
+vestToSteem (vestingShares, totalVestingShares, totalVestingFundSteem) {
+     return (
+       parseFloat(totalVestingFundSteem) *
+       (parseFloat(vestingShares) / parseFloat(totalVestingShares))
+     )
+   }
 
 function sendComment(parentAuthor, parentPermlink) {
   var content = null;
