@@ -238,9 +238,9 @@ function sendVote(name, post, retries) {
 }
 
 function calculateUserVestingShares (user) {
-  const vestingShares = parseFloat(this.parsePayoutAmount(user.vesting_shares));
-  const receivedVestingShares = parseFloat(this.parsePayoutAmount(user.received_vesting_shares));
-  const delegatedVestingShares = parseFloat(this.parsePayoutAmount(user.delegated_vesting_shares));
+  const vestingShares = parseFloat(parsePayoutAmount(user.vesting_shares));
+  const receivedVestingShares = parseFloat(parsePayoutAmount(user.received_vesting_shares));
+  const delegatedVestingShares = parseFloat(parsePayoutAmount(user.delegated_vesting_shares));
   utils.log("vestingShares -> " + vestingShares );
   utils.log("receivedVestingShares -> " + receivedVestingShares );
   utils.log("delegatedVestingShares -> " + delegatedVestingShares );
