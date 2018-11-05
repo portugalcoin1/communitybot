@@ -195,9 +195,24 @@ function sendVote(name, post, retries) {
 
   var member = members.find(m => m.name == name);
 
+  var account_member = "";
+  // Load the account member info
+  steem.api.getAccounts([name], function (err, result) {
+    if (err || !result)
+      console.log(err, result);
+    else {
+      account_member = result[0];
+
+    }
+  });
+
+  var sp_value = calculateUserVestingShares(account_member);
+  var sp_delegate = calculateTotalDelegatedSP(account_member, sp_value, member.vesting_shares);
+
   //If it is not delegator receives 10% of the value. - portugalcoin
   if(member.vesting_shares > 0){
-    var sp_value = (member.vesting_shares * 489) / 1000000;
+    //var sp_value = (member.vesting_shares * 489) / 1000000;
+    //var sp_value = calculateUserVestingShares();
     utils.log('SP Value: ' + sp_value);
     config.vote_weight = 200;
     utils.log('Member vote weight: ' + config.vote_weight);
@@ -222,6 +237,30 @@ function sendVote(name, post, retries) {
       }
     }
   });
+}
+
+function calculateUserVestingShares (user) {
+  const vestingShares = parseFloat(this.parsePayoutAmount(user.vesting_shares));
+  const receivedVestingShares = parseFloat(this.parsePayoutAmount(user.received_vesting_shares));
+  const delegatedVestingShares = parseFloat(this.parsePayoutAmount(user.delegated_vesting_shares));
+  utils.log("vestingShares -> " + vestingShares );
+  utils.log("receivedVestingShares -> " + receivedVestingShares );
+  utils.log("delegatedVestingShares -> " + delegatedVestingShares );
+  return vestingShares + receivedVestingShares - delegatedVestingShares;
+}
+
+function parsePayoutAmount (amount) {
+  return parseFloat(String(amount).replace(/\s[A-Z]*$/, ''))
+ }
+
+function calculateTotalDelegatedSP (user, totalVestingShares, totalVestingFundSteem) {
+     const receivedSP = parseFloat(
+       this.vestToSteem(user.received_vesting_shares, totalVestingShares, totalVestingFundSteem)
+     )
+     const delegatedSP = parseFloat(
+       this.vestToSteem(user.delegated_vesting_shares, totalVestingShares, totalVestingFundSteem)
+     )
+     return receivedSP - delegatedSP
 }
 
 function sendComment(parentAuthor, parentPermlink) {
