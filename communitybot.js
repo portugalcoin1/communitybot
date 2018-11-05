@@ -83,7 +83,7 @@ function startProcess() {
     if (vp >= 6000) {
       skip = true;
 
-      var member = members.find(m => m.name == name);
+      var member = members.find(m => m.name == account.name);
 
       if (member.auto_vote < 1){
         voteNext();
