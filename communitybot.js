@@ -129,8 +129,8 @@ function voteNext() {
   if(member == null)
     return;
 
-  if(member.auto_vote > 0)
-    return;
+  //if(member.auto_vote > 0)
+    //return;
 
   steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 1, function (err, result) {
     if (result && !err) {
