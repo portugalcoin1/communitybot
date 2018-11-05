@@ -82,12 +82,18 @@ function startProcess() {
     // We are at 60% voting power - time to vote!
     if (vp >= 6000) {
       skip = true;
-      voteNext();
+
+      getMembersPosts();
+
+      var member = members.find(m => m.name == name);
+
+      if (member.auto_vote < 1){
+        voteNext();
+      }
+
     }
 
     getTransactions();
-
-    //getMembersPosts();
 
     // Save the state of the bot to disk.
     saveState();
