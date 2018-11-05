@@ -82,13 +82,7 @@ function startProcess() {
     // We are at 60% voting power - time to vote!
     if (vp >= 6000) {
       skip = true;
-
-      var member = members.find(m => m.name == account.name);
-
-      if (member.auto_vote < 1){
-        voteNext();
-      }
-
+      voteNext();
     }
 
     getTransactions();
@@ -135,6 +129,9 @@ function voteNext() {
   var member = getNextActiveMember();
 
   if(member == null)
+    return;
+
+  if(member.auto_vote > 0)
     return;
 
   steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 1, function (err, result) {
