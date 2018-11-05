@@ -248,23 +248,22 @@ function calculateUserVestingShares (user) {
 }
 
 function parsePayoutAmount (amount) {
-  return parseFloat(String(amount).replace(/\s[A-Z]*$/, ''))
+  return parseFloat(String(amount).replace(/\s[A-Z]*$/, ''));
  }
 
 function calculateTotalDelegatedSP (user, totalVestingShares, totalVestingFundSteem) {
      const receivedSP = parseFloat(
        vestToSteem(user.received_vesting_shares, totalVestingShares, totalVestingFundSteem)
-     )
+     );
      const delegatedSP = parseFloat(
        vestToSteem(user.delegated_vesting_shares, totalVestingShares, totalVestingFundSteem)
-     )
-     return receivedSP - delegatedSP
+     );
+     return receivedSP - delegatedSP;
 }
 
-vestToSteem (vestingShares, totalVestingShares, totalVestingFundSteem) {
+function vestToSteem (vestingShares, totalVestingShares, totalVestingFundSteem) {
      return (
-       parseFloat(totalVestingFundSteem) *
-       (parseFloat(vestingShares) / parseFloat(totalVestingShares))
+       parseFloat(totalVestingFundSteem) * (parseFloat(vestingShares) / parseFloat(totalVestingShares));
      )
    }
 
