@@ -263,7 +263,7 @@ function calculateTotalDelegatedSP (user, totalVestingShares, totalVestingFundSt
 
 function vestToSteem (vestingShares, totalVestingShares, totalVestingFundSteem) {
      return (
-       parseFloat(totalVestingFundSteem) * (parseFloat(vestingShares) / parseFloat(totalVestingShares));
+       parseFloat(totalVestingFundSteem) * (parseFloat(vestingShares) / parseFloat(totalVestingShares))
      )
    }
 
