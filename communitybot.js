@@ -97,8 +97,6 @@ function startProcess() {
 
 function getNextActiveMember(loop_count) {
 
-utils.log("Loop Count: " + loop_count);
-
 	if(!loop_count)
 		loop_count = 0;
 
@@ -213,7 +211,7 @@ function sendVote(name, post, retries) {
   if(member.vesting_shares > 0){
     //var sp_value = (member.vesting_shares * 489) / 1000000;
     //var sp_value = calculateUserVestingShares();
-    utils.log('SP Value: ' + sp_value);
+    utils.log('sp_delegate: ' + sp_delegate);
     config.vote_weight = 200;
     utils.log('Member vote weight: ' + config.vote_weight);
   }else{
