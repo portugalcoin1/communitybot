@@ -55,6 +55,16 @@ if (fs.existsSync('members.json')) {
 	utils.log('Loaded ' + members.length + ' members.');
 }
 
+/*function membersDelegate(){
+  var count = 0;
+  $.each(members, function(i, item) {
+    if(members[i].full_delegation == true){
+        count++;
+    }
+  });​
+  return count;
+}*/
+
 // Schedule to run every minute
 setInterval(startProcess, 60 * 1000);
 
@@ -193,17 +203,20 @@ function sendVote(name, post, retries) {
 
   var member = members.find(m => m.name == name);
 
-  var steemPower =  getSteemPower(member.name);
- utils.log('steemPower: ' + steemPower);
-  //var sp_value = calculateUserVestingShares(member.name);
-  //var sp_delegate = calculateTotalDelegatedSP(account_member, sp_value, member.vesting_shares);
-
   //If it is not delegator receives 10% of the value. - portugalcoin
   if(member.vesting_shares > 0){
-    //var sp_value = (member.vesting_shares * 489) / 1000000;
-    //var sp_value = calculateUserVestingShares();
-    utils.log('sp_delegate: ' + steemPower);
-    config.vote_weight = 200;
+    var sp_value_member = member.vesting_shares / 2;
+    utils.log('sp_delegate: ' + sp_value_member);
+
+    //Total de SP do bot
+    steem.api.getAccounts(['steemitportugal'], function(err, result) {
+       const received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
+       var sp_total_bot = received_vesting_shares / 2;
+			});
+
+    config.vote_weight = sp_value_member / sp_total_bot  * 10000;
+
+    //config.vote_weight = 200;
     utils.log('Member vote weight: ' + config.vote_weight);
   }else{
     config.vote_weight = 100;
@@ -226,25 +239,6 @@ function sendVote(name, post, retries) {
       }
     }
   });
-}
-
-function getSteemPower(username) {
-    return Promise.all([
-        steem.api.getAccounts([username]),
-        steem.api.getDynamicGlobalProperties()
-    ]).then(([user, globals]) => {
-        const totalSteem = Number(globals.total_vesting_fund_steem.split(' ')[0]);
-        const totalVests = Number(globals.total_vesting_shares.split(' ')[0]);
-        const userVests = Number(user[0].vesting_shares.split(' ')[0]);
-        const delegatedVestingShares = Number(delegated_vesting_shares.split(' ')[0]);
-
-        utils.log("totalSteem -> " + totalSteem );
-        utils.log("totalVests -> " + totalVests );
-        utils.log("userVests -> " + userVests );
-        utils.log("delegatedVestingShares -> " + delegatedVestingShares );
-
-        return totalSteem * (userVests / totalVests);
-    });
 }
 
 function sendComment(parentAuthor, parentPermlink) {
