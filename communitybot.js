@@ -202,7 +202,7 @@ function sendVote(name, post, retries) {
   if(member.vesting_shares > 0){
     //var sp_value = (member.vesting_shares * 489) / 1000000;
     //var sp_value = calculateUserVestingShares();
-    utils.log('sp_delegate: ' + sp_delegate);
+    utils.log('sp_delegate: ' + steemPower);
     config.vote_weight = 200;
     utils.log('Member vote weight: ' + config.vote_weight);
   }else{
