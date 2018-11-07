@@ -218,7 +218,7 @@ function sendVote(name, post, retries) {
        utils.log('sp_bot: ' + sp_bot);
 			});
 
-    config.vote_weight = sp_value_member / sp_total_bot  * 10000;
+    config.vote_weight = (sp_value_member / sp_total_bot)  * 10000;
 
     //config.vote_weight = 200;
     utils.log('Member vote weight: ' + config.vote_weight);
