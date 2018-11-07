@@ -207,11 +207,12 @@ function sendVote(name, post, retries) {
   if(member.vesting_shares > 0){
     var sp_value_member = member.vesting_shares / 2;
     utils.log('sp_delegate: ' + sp_value_member);
-
+    var sp_total_bot = 0;
     //Total de SP do bot
     steem.api.getAccounts(['steemitportugal'], function(err, result) {
+
        const received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
-       var sp_total_bot = received_vesting_shares / 2;
+       sp_total_bot = received_vesting_shares / 2;
 			});
 
     config.vote_weight = sp_value_member / sp_total_bot  * 10000;
