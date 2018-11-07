@@ -219,9 +219,11 @@ function sendVote(name, post, retries) {
 			});
 
     var vote_weight_number = (sp_value_member / sp_bot) * 10000;
-    utils.log('vote_weight_number: ' + vote_weight_number);
+    var str_number = vote_weight_number.toString();
+    var weight_bot = str_number.split('.');
+    utils.log( 'vote_weight_number: ' + Number(weight_bot) );
 
-    config.vote_weight =  Math.round(vote_weight_number);
+    config.vote_weight =  Number(weight_bot);
     utils.log('Member vote weight: ' + Math.round(config.vote_weight));
   }else{
     config.vote_weight = 100;
