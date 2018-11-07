@@ -221,7 +221,7 @@ function sendVote(name, post, retries) {
     var vote_weight_number = (sp_value_member / sp_bot) * 10000;
     var str_number = vote_weight_number.toString();
     var weight_bot = str_number.split('.');
-    utils.log( 'vote_weight_number: ' + weight_bot[0] );
+    utils.log( 'vote_weight_number: ' + str_number );
 
     config.vote_weight =  Number(weight_bot[0]);
     utils.log('Member vote weight: ' + Math.round(config.vote_weight));
