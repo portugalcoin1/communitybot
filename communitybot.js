@@ -213,6 +213,7 @@ function sendVote(name, post, retries) {
 
        const received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
        sp_total_bot = received_vesting_shares / 2;
+       utils.log('sp_total_bot: ' + sp_total_bot);
 			});
 
     config.vote_weight = sp_value_member / sp_total_bot  * 10000;
