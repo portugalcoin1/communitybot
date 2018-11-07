@@ -218,10 +218,10 @@ function sendVote(name, post, retries) {
        utils.log('sp_bot: ' + sp_bot);
 			});
 
-    var vote_weight_number = sp_value_member.toFixed(4) / sp_total_bot.toFixed(4)  * 10000;
-    utils.log('vote_weight_number: ' + vote_weight_number);
+    var vote_weight_number = (sp_value_member / sp_bot) * 10000;
+    utils.log('vote_weight_number: ' + parseInt(vote_weight_number);
 
-    config.vote_weight =  vote_weight_number.toFixed(4);
+    config.vote_weight =  parseInt(vote_weight_number);
     utils.log('Member vote weight: ' + config.vote_weight);
   }else{
     config.vote_weight = 100;
