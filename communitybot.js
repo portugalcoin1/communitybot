@@ -221,7 +221,7 @@ function sendVote(name, post, retries) {
     var vote_weight_number = (parseInt(sp_value_member,10) / parseInt(sp_bot,10)) * 10000;
     utils.log( 'vote_weight_number: ' + parseInt(vote_weight_number,10) );
 
-    config.vote_weight =  getVoteWeight('steemitportugal');
+    config.vote_weight =  parseInt(vote_weight_number,10);
     utils.log('Member vote weight: ' + Math.round(config.vote_weight));
   }else{
     config.vote_weight = 100;
