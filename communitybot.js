@@ -222,7 +222,7 @@ function sendVote(name, post, retries) {
     utils.log('vote_weight_number: ' + vote_weight_number);
 
     config.vote_weight =  Math.round(vote_weight_number);
-    utils.log('Member vote weight: ' + Math.round(config.vote_weight);
+    utils.log('Member vote weight: ' + Math.round(config.vote_weight));
   }else{
     config.vote_weight = 100;
   }
