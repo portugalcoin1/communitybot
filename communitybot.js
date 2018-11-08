@@ -350,7 +350,7 @@ function getTransactions() {
 
 function getMembersPosts(member) {
   // Go through delegators and get their latest posts
-  members.map(memb => {
+  //members.map(memb => {
 
     // Get this delegator account history
     steem.api.getAccountHistory(member.name, -1, 1, (err, result) => {
@@ -367,8 +367,8 @@ function getMembersPosts(member) {
 
       // Go through the result and find post transactions
       result.map(trans => {
-        const last = memb.last_trans || -1;
-        const last_day = memb.last_day || 0;
+        const last = member.last_trans || -1;
+        const last_day = member.last_day || 0;
 
         // Get today timestamp
         const now = new Date();
@@ -378,25 +378,25 @@ function getMembersPosts(member) {
         if (trans[0] <= last) return;
 
         // Is this post in available daily auto vote
-        const auto_vote = memb.last_day === today ? memb.auto_vote : 0;
+        const auto_vote = member.last_day === today ? member.auto_vote : 0;
         if (config.daily_vote < auto_vote) return;
 
         const op = trans[1].op;
 
         // Save this as last transaction
-        memb.last_trans = trans[0];
-        memb.last_day = today;
-        memb.auto_vote = auto_vote + 1;
+        member.last_trans = trans[0];
+        member.last_day = today;
+        member.auto_vote = auto_vote + 1;
 
-        utils.log('*** Member Auto Vote: ' + memb.name);
-        utils.log('*** Last day: ' + memb.last_day);
-        utils.log('*** Member Auto Vote: ' + memb.auto_vote);
+        utils.log('*** Member Auto Vote: ' + member.name);
+        utils.log('*** Last day: ' + member.last_day);
+        utils.log('*** Member Auto Vote: ' + member.auto_vote);
 
       });
     });
 
-    return memb;
-  });
+    //return memb;
+  //});
 
   // Save the updated list of delegators to disk
   saveMembers();
