@@ -357,8 +357,8 @@ function getMembersPosts(member) {
       if (err || !result) {
         logError('Error loading member account history: ' + err);
 
-        if (callback)
-          callback();
+        //if (callback)
+          //callback();
 
         return;
       }
@@ -402,8 +402,8 @@ function getMembersPosts(member) {
   saveMembers();
 
   // To comply with existing pattern...
-  if (callback)
-    callback();
+  //if (callback)
+    //callback();
 }
 
 function updateMember(name, payment, vesting_shares) {
