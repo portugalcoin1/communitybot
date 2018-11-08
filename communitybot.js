@@ -215,9 +215,10 @@ function sendVote(name, post, retries) {
      utils.log( 'sp_value_member: ' + member.vesting_shares  );
      utils.log( 'received_vesting_shares: ' + received_vesting_shares  );
      utils.log( 'vote_weight_number: ' + vote_weight_number  );
+     config.vote_weight = vote_weight_number;
     });
 
-    config.vote_weight = vote_weight_number;
+
   }else{
     config.vote_weight = 100;
   }
