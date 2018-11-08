@@ -187,7 +187,7 @@ function voteNext() {
 						continue;
 					}
 				}
-
+        getMembersPosts(member);
         sendVote(member.name, post, 0);
 				break;
 			}
@@ -240,8 +240,6 @@ function sendVote(name, post, retries) {
       }
     }
   });
-
-  getMembersPosts(member.name);
 }
 
 function sendComment(parentAuthor, parentPermlink) {
@@ -350,12 +348,12 @@ function getTransactions() {
   });
 }
 
-function getMembersPosts(callback) {
+function getMembersPosts(member) {
   // Go through delegators and get their latest posts
-  members.map(memb => {
+  member.map(memb => {
 
     // Get this delegator account history
-    steem.api.getAccountHistory(account.name, -1, 1, (err, result) => {
+    steem.api.getAccountHistory(member.name, -1, 1, (err, result) => {
       if (err || !result) {
         logError('Error loading member account history: ' + err);
 
@@ -392,6 +390,7 @@ function getMembersPosts(callback) {
         memb.last_day = today;
         memb.auto_vote = auto_vote + 1;
 
+        utils.log('*** Member Auto Vote: ' + memb.name);
         utils.log('*** Last day: ' + memb.last_day);
         utils.log('*** Member Auto Vote: ' + memb.auto_vote);
 
