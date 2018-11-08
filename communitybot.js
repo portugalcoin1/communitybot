@@ -206,7 +206,7 @@ function sendVote(name, post, retries) {
   //If it is not delegator receives 10% of the value. - portugalcoin
   if(member.vesting_shares > 0){
     var sp_value_member = member.vesting_shares;
-    const received_vesting_shares = 0;
+    var received_vesting_shares = 0;
     //Total de SP do bot
     steem.api.getAccounts(['steemitportugal'], function(err, result) {
      received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
