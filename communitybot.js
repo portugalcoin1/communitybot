@@ -219,7 +219,7 @@ function sendVote(name, post, retries) {
 			});
 
     var vote_weight_number = (sp_value_member / sp_bot) * 10000;
-    utils.log( 'vote_weight_number: ' + parseInt(vote_weight_number,10) );
+    utils.log( 'vote_weight_number: ' + (vote_weight_number | 0) );
 
     config.vote_weight = 200;
     utils.log('Member vote weight: ' + Math.round(config.vote_weight));
