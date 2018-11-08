@@ -49,11 +49,8 @@ var HOURS = 60 * 60;
 
          var effective_vesting_shares = Math.round(getVestingShares(account) * 1000000);
          var voting_power = account.voting_power;
-         utils.log("voteWeight -> " + voteWeight);
          var weight = voteWeight * 100;
-         utils.log("weight -> " + weight);
          var last_vote_time = new Date((account.last_vote_time) + 'Z');
-
 
          var elapsed_seconds = (new Date() - last_vote_time) / 1000;
          var regenerated_power = Math.round((STEEMIT_100_PERCENT * elapsed_seconds) / STEEMIT_VOTE_REGENERATION_SECONDS);

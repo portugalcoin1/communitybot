@@ -205,26 +205,19 @@ function sendVote(name, post, retries) {
 
   //If it is not delegator receives 10% of the value. - portugalcoin
   if(member.vesting_shares > 0){
-    var sp_value_member = member.vesting_shares / 2000;
-    utils.log('sp_delegate: ' + sp_value_member);
 
-    var sp_total_bot, sp_bot = 0;
 
     //Total de SP do bot
     steem.api.getAccounts(['steemitportugal'], function(err, result) {
        const received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
-       sp_total_bot = received_vesting_shares / 2;
-       sp_bot = sp_total_bot / 1000;
-       utils.log('sp_bot: ' + sp_bot);
 			});
 
-    var number1 =(sp_value_member | 0);
-    var number2 =(sp_bot | 0);
-    var vote_weight_number = (number1 / number2) * 100;
-    utils.log( 'vote_weight_number: ' + (vote_weight_number | 0) );
+    var vote_weight_number = (sp_value_member / received_vesting_shares) * 10000;
+    utils.log( 'sp_value_member: ' + sp_value_member  );
+    utils.log( 'received_vesting_shares: ' + received_vesting_shares  );
+    utils.log( 'vote_weight_number: ' + vote_weight_number  );
 
     config.vote_weight = vote_weight_number;
-    utils.log('Member vote weight: ' + Math.round(config.vote_weight));
   }else{
     config.vote_weight = 100;
   }
