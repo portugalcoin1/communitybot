@@ -350,7 +350,7 @@ function getTransactions() {
 
 function getMembersPosts(member) {
   // Go through delegators and get their latest posts
-  member.map(memb => {
+  members.map(memb => {
 
     // Get this delegator account history
     steem.api.getAccountHistory(member.name, -1, 1, (err, result) => {
@@ -377,15 +377,13 @@ function getMembersPosts(member) {
         // Is this new?
         if (trans[0] <= last) return;
 
-        // Is this post in available daily auto bids
+        // Is this post in available daily auto vote
         const auto_vote = memb.last_day === today ? memb.auto_vote : 0;
         if (config.daily_vote < auto_vote) return;
 
-        utils.log('*** Auto Vote: ' + auto_vote);
-
         const op = trans[1].op;
 
-          // Save this as last transaction
+        // Save this as last transaction
         memb.last_trans = trans[0];
         memb.last_day = today;
         memb.auto_vote = auto_vote + 1;
