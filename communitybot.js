@@ -133,6 +133,7 @@ function voteNext() {
   if(member.auto_vote > 0){
     utils.log( 'member.name: ' + member.name  );
     utils.log( 'member.auto_vote: ' + member.auto_vote  );
+    member = getNextActiveMember();
     return;
   }
 
