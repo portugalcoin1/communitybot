@@ -130,12 +130,12 @@ function voteNext() {
     return;
 
 
-  if(member.auto_vote > 0){
+  /*if(member.auto_vote > 0){
     utils.log( 'member.name: ' + member.name  );
     utils.log( 'member.auto_vote: ' + member.auto_vote  );
     member = getNextActiveMember();
     return;
-  }
+  }*/
 
 
   steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 1, function (err, result) {
