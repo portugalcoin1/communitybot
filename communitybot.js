@@ -87,7 +87,7 @@ function startProcess() {
 
     getTransactions();
 
-    getMembersPosts();
+    //getMembersPosts();
 
     // Save the state of the bot to disk.
     saveState();
@@ -129,7 +129,7 @@ function voteNext() {
   if(member == null)
     return;
 
- utils.log( 'member.auto_vote1: ' + member.auto_vote  );
+
   if(member.auto_vote > 0){
     utils.log( 'member.name: ' + member.name  );
     utils.log( 'member.auto_vote: ' + member.auto_vote  );
@@ -184,6 +184,7 @@ function voteNext() {
 				}
         //getMembersPosts(member);
         sendVote(member.name, post, 0);
+        getMembersPosts(member);
 				break;
 			}
 
