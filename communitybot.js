@@ -55,16 +55,6 @@ if (fs.existsSync('members.json')) {
 	utils.log('Loaded ' + members.length + ' members.');
 }
 
-/*function membersDelegate(){
-  var count = 0;
-  $.each(members, function(i, item) {
-    if(members[i].full_delegation == true){
-        count++;
-    }
-  });​
-  return count;
-}*/
-
 // Schedule to run every minute
 setInterval(startProcess, 60 * 1000);
 
@@ -97,7 +87,7 @@ function startProcess() {
 
     getTransactions();
 
-    //getMembersPosts();
+    getMembersPosts();
 
     // Save the state of the bot to disk.
     saveState();
@@ -139,8 +129,12 @@ function voteNext() {
   if(member == null)
     return;
 
-  if(member.auto_vote > 0)
+  if(member.auto_vote > 0){
+    utils.log( 'member.name: ' + member.name  );
+    utils.log( 'member.auto_vote: ' + member.auto_vote  );
     return;
+  }
+
 
   steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 1, function (err, result) {
     if (result && !err) {
@@ -187,7 +181,7 @@ function voteNext() {
 						continue;
 					}
 				}
-        getMembersPosts(member);
+        //getMembersPosts(member);
         sendVote(member.name, post, 0);
 				break;
 			}
@@ -348,7 +342,7 @@ function getTransactions() {
   });
 }
 
-function getMembersPosts(member) {
+function getMembersPosts() {
   // Go through delegators and get their latest posts
   //members.map(memb => {
 
@@ -400,7 +394,7 @@ function getMembersPosts(member) {
 
   // Save the updated list of delegators to disk
   saveMembers();
-
+utils.log('*** passou aqui: ' + member.name);
   // To comply with existing pattern...
   //if (callback)
     //callback();
