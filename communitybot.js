@@ -130,12 +130,12 @@ function voteNext() {
     return;
 
 
-  /*if(member.auto_vote > 0){
+  if(member.auto_vote > 0){
     utils.log( 'member.name: ' + member.name  );
     utils.log( 'member.auto_vote: ' + member.auto_vote  );
     member = getNextActiveMember();
     return;
-  }*/
+  }
 
 
   steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 1, function (err, result) {
@@ -370,7 +370,14 @@ function getMembersPosts(member) {
         if (trans[0] <= last) return;
 
         // Is this post in available daily auto vote
-        const auto_vote = member.last_day === today ? member.auto_vote : 0;
+        //const auto_vote = member.last_day === today ? member.auto_vote : 0;
+        if( member.last_day == today && config.daily_vote < auto_vote){
+          utils.log('*** Member ' + member.name + 'already had a vote today ***');
+          return;
+        }else{
+          member.auto_vote = 0;
+        }
+
         if (config.daily_vote < auto_vote) return;
 
         const op = trans[1].op;
