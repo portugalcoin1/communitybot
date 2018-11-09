@@ -133,8 +133,8 @@ function voteNext() {
   if(member.auto_vote > 0){
     utils.log( 'member.name: ' + member.name  );
     utils.log( 'member.auto_vote: ' + member.auto_vote  );
-    member = getNextActiveMember();
-    return;
+    //member = getNextActiveMember();
+    continue;
   }
 
 
@@ -183,7 +183,7 @@ function voteNext() {
 						continue;
 					}
 				}
-        //getMembersPosts(member);
+
         sendVote(member.name, post, 0);
         getMembersPosts(member);
 				break;
