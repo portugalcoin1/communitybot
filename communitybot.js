@@ -321,7 +321,7 @@ function getTransactions() {
 
           if(currency == 'STEEM' && amount >= config.membership.dues_steem) {
             // Update member info
-            updateMember(op[1].from, amount, -1);
+            updateMember(op[1].from, amount, -1, 0, 0);
           }
 
           // Check if a user is sponsoring another user with their delegation
@@ -333,7 +333,7 @@ function getTransactions() {
         } else if (op[0] == 'delegate_vesting_shares' && op[1].delegatee == account.name) {
 
           // Update member info
-          updateMember(op[1].delegator, 0, parseFloat(op[1].vesting_shares));
+          updateMember(op[1].delegator, 0, parseFloat(op[1].vesting_shares), 0, 0);
 
           utils.log('*** Delegation Update - ' + op[1].delegator + ' has delegated ' + op[1].vesting_shares);
         }
@@ -346,16 +346,11 @@ function getTransactions() {
 }
 
 function getMembersPosts(member) {
-  // Go through delegators and get their latest posts
-  //members.map(memb => {
 
     // Get this delegator account history
     steem.api.getAccountHistory(member.name, -1, 1, (err, result) => {
       if (err || !result) {
         logError('Error loading member account history: ' + err);
-
-        //if (callback)
-          //callback();
 
         return;
       }
@@ -392,18 +387,12 @@ function getMembersPosts(member) {
       });
     });
 
-    //return memb;
-  //});
-
   // Save the updated list of delegators to disk
-  saveMembers();
-utils.log('*** passou aqui: ' + member.name);
-  // To comply with existing pattern...
-  //if (callback)
-    //callback();
+  updateMember(member.name,0, member.vesting_shares, member.last_trans, member.auto_vote);
+  utils.log('*** passou aqui: ' + member.name);
 }
 
-function updateMember(name, payment, vesting_shares) {
+function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
 
   var member = members.find(m => m.name == name);
 
@@ -450,12 +439,12 @@ function sponsorMember(sponsor, user, amount) {
 
   if(member && member.vesting_shares >= config.membership.full_delegation_vests) {
     // Subtract the sponsorship amount from the sponsor
-    updateMember(member.name, 0, member.vesting_shares - config.membership.full_delegation_vests);
+    updateMember(member.name, 0, member.vesting_shares - config.membership.full_delegation_vests, member.auto_vote, member.last_day);
 
     member.sponsoring.push(user);
 
     // Add it to the new member
-    updateMember(user, 0, config.membership.full_delegation_vests);
+    updateMember(user, 0, config.membership.full_delegation_vests, 0, 0);
 
     var new_member = members.find(m => m.name == user);
 
