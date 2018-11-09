@@ -371,10 +371,13 @@ function getMembersPosts(member) {
 
         // Is this post in available daily auto vote
         //const auto_vote = member.last_day === today ? member.auto_vote : 0;
-        if( member.last_day == today && config.daily_vote < auto_vote){
+        var auto_vote = 0;
+        if( member.last_day == today){
           utils.log('*** Member ' + member.name + 'already had a vote today ***');
+          auto_vote = member.auto_vote;
           return;
         }else{
+          auto_vote = 0;
           member.auto_vote = 0;
         }
 
@@ -395,7 +398,7 @@ function getMembersPosts(member) {
     });
 
   // Save the updated list of delegators to disk
-  updateMember(member.name,0, member.vesting_shares, member.last_trans, member.auto_vote);
+  updateMember(member.name,0, member.vesting_shares, member.last_day, member.auto_vote);
   utils.log('*** passou aqui: ' + member.name);
 }
 
@@ -446,7 +449,7 @@ function sponsorMember(sponsor, user, amount) {
 
   if(member && member.vesting_shares >= config.membership.full_delegation_vests) {
     // Subtract the sponsorship amount from the sponsor
-    updateMember(member.name, 0, member.vesting_shares - config.membership.full_delegation_vests, member.auto_vote, member.last_day);
+    updateMember(member.name, 0, member.vesting_shares - config.membership.full_delegation_vests, member.last_day, member.auto_vote);
 
     member.sponsoring.push(user);
 
