@@ -345,7 +345,7 @@ function getTransactions() {
   });
 }
 
-function getMembersPosts() {
+function getMembersPosts(member) {
   // Go through delegators and get their latest posts
   //members.map(memb => {
 
