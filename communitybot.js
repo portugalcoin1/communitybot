@@ -127,7 +127,8 @@ function voteNext() {
   if(member == null)
     return;
 
-  //Today date
+  // Get today timestamp
+  const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf();
 
   if(member.auto_vote > 0 && member.last_day == today){
