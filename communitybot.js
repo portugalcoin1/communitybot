@@ -68,7 +68,6 @@ function startProcess() {
       console.log(err, result);
     else {
       account = result[0];
-
     }
   });
 
@@ -138,7 +137,6 @@ function voteNext() {
     member = getNextActiveMember();
     return;
   }
-
 
   steem.api.getDiscussionsByAuthorBeforeDate(member.name, null, new Date().toISOString().split('.')[0], 1, function (err, result) {
     if (result && !err) {
@@ -214,12 +212,13 @@ function sendVote(name, post, retries) {
      utils.log( 'sp_value_member: ' + member.vesting_shares  );
      utils.log( 'received_vesting_shares: ' + received_vesting_shares  );
      utils.log( 'vote_weight_number: ' + vote_weight_number  );
-     config.vote_weight = vote_weight_number;
+     //Member delegator have 5% vote weight more % of your delegation
+     config.vote_weight = vote_weight_number + 500;
     });
 
-
   }else{
-    config.vote_weight = 100;
+    //Member not delegator have 5% vote weight
+    config.vote_weight = 500;
   }
 
   steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, config.vote_weight, function (err, result) {
