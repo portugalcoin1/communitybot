@@ -410,10 +410,6 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
     member = { name: name, valid_thru: null, vesting_shares: 0, total_dues: 0, joined: new Date(), sponsoring: [], sponsor: null, last_trans:0, last_day:0, auto_vote: 0 };
     members.push(member);
     utils.log('Added new member: ' + name);
-  }else{
-    member = { name: member.name, valid_thru: member.valid_thru, vesting_shares: member.vesting_shares, total_dues: 0, joined: member.joined, sponsoring: [], sponsor: null, last_trans:member.last_trans, last_day:last_day, auto_vote: auto_vote };
-    members.push(member);
-    utils.log('Update member: ' + name);
   }
 
   member.total_dues += payment;
