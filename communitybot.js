@@ -87,8 +87,6 @@ function startProcess() {
 
     getTransactions();
 
-    //getMembersPosts();
-
     // Save the state of the bot to disk.
     saveState();
   } else if(skip)
@@ -129,10 +127,12 @@ function voteNext() {
   if(member == null)
     return;
 
+  //Today date
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf();
 
-  if(member.auto_vote > 0){
-    utils.log( 'member.name: ' + member.name  );
-    utils.log( 'member.auto_vote: ' + member.auto_vote  );
+  if(member.auto_vote > 0 && member.last_day == today){
+    utils.log( 'This member: ' + member.name + ' already voted today'  );
+    utils.log( 'This member have today vote : ' + member.auto_vote  );
     last_voted++;
     member = getNextActiveMember();
     return;
