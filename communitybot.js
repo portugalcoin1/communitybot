@@ -206,12 +206,11 @@ function sendVote(name, post, retries) {
     //Total de SP do bot
     steem.api.getAccounts(['steemitportugal'], function(err, result) {
      var received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
-     utils.log( 'received_vesting_shares1: ' + received_vesting_shares  );
 
      var vote_weight_number = (member.vesting_shares / received_vesting_shares) * 10000;
-     utils.log( 'sp_value_member: ' + member.vesting_shares  );
-     utils.log( 'received_vesting_shares: ' + received_vesting_shares  );
-     utils.log( 'vote_weight_number: ' + vote_weight_number  );
+     utils.log( 'SP Value Member: ' + member.vesting_shares  );
+     utils.log( 'Received Vesting Shares: ' + received_vesting_shares  );
+     utils.log( 'Vote Weight: ' + vote_weight_number  );
      //Member delegator have 5% vote weight more % of your delegation
      config.vote_weight = vote_weight_number + 500;
     });
@@ -371,7 +370,6 @@ function getMembersPosts(member) {
         if (trans[0] <= last) return;
 
         // Is this post in available daily auto vote
-        //const auto_vote = member.last_day === today ? member.auto_vote : 0;
         var auto_vote = 0;
         if( member.last_day == today){
           utils.log('*** Member ' + member.name + 'already had a vote today ***');
@@ -412,6 +410,10 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
     member = { name: name, valid_thru: null, vesting_shares: 0, total_dues: 0, joined: new Date(), sponsoring: [], sponsor: null, last_trans:0, last_day:0, auto_vote: 0 };
     members.push(member);
     utils.log('Added new member: ' + name);
+  }else{
+    member = { name: member.name, valid_thru: member.valid_thru, vesting_shares: member.vesting_shares, total_dues: 0, joined: member.joined, sponsoring: [], sponsor: null, last_trans:member.last_trans, last_day:last_day, auto_vote: auto_vote };
+    members.push(member);
+    utils.log('Update member: ' + name);
   }
 
   member.total_dues += payment;
