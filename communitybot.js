@@ -134,7 +134,7 @@ function voteNext() {
     utils.log( 'member.name: ' + member.name  );
     utils.log( 'member.auto_vote: ' + member.auto_vote  );
     //member = getNextActiveMember();
-    continue;
+    break;
   }
 
 
