@@ -166,7 +166,7 @@ function voteNext() {
 
         var now = new Date();
         // Make sure the post is less than 1 days old
-        if((new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)+ 'Z')) < new Date()) {
+        if((new Date(AddMinutesToDate(new Date(post.created + 'Z'),15))) < new Date()) {
           utils.log('*** I can vote');
           utils.log('*** Add minutes ->' + new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)+ 'Z'));
           utils.log('*** Date today ->' + new Date());
