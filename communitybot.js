@@ -120,6 +120,21 @@ function getNextActiveMember(loop_count) {
 
 }
 
+function AddMinutesToDate(date, minutes) {
+  return new Date(date.getTime() + minutes*60000);
+}
+
+function DateFormat(date){
+  var days=date.getDate();
+  var year=date.getFullYear();
+  var month=(date.getMonth()+1);
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  minutes = minutes < 10 ? '0'+ minutes : minutes;
+  var strTime =days+'/'+month+'/'+year+'/ '+hours + ':' + minutes;
+  return strTime;
+}
+
 function voteNext() {
   var member = getNextActiveMember();
 
@@ -148,6 +163,15 @@ function voteNext() {
 
 			for(var i = 0; i < result.length; i++) {
 				var post = result[i];
+
+        var now = new Date();
+        // Make sure the post is less than 1 days old
+        if((new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)+ 'Z')) < new Date()) {
+          utils.log('*** I can vote');
+        }else{
+          utils.log('*** I can´t vote');
+          continue;
+        }
 
 				// Make sure the post is less than 1 days old
 				if((new Date() - new Date(post.created + 'Z')) >= (1 * 24 * 60 * 60 * 1000)) {
