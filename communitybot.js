@@ -168,11 +168,11 @@ function voteNext() {
         // Make sure the post is less than 1 days old
         if((new Date(AddMinutesToDate(new Date(post.created + 'Z'),15))) < new Date()) {
           utils.log('*** I can vote');
-          utils.log('*** Add minutes ->' + new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)+ 'Z'));
+          utils.log('*** Add minutes ->' + new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)));
           utils.log('*** Date today ->' + new Date());
         }else{
           utils.log('*** I can´t vote');
-          utils.log('*** Add minutes ->' + new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)+ 'Z'));
+          utils.log('*** Add minutes ->' + new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)));
           utils.log('*** Date today ->' + new Date());
           continue;
         }
