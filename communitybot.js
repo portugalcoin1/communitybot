@@ -165,15 +165,11 @@ function voteNext() {
 				var post = result[i];
 
         var now = new Date();
-        // Make sure the post is less than 1 days old
+        // Make sure the post is less or more than 15 minutes old
         if((new Date(AddMinutesToDate(new Date(post.created + 'Z'),15))) < new Date()) {
-          utils.log('*** I can vote');
-          utils.log('*** Add minutes ->' + new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)));
-          utils.log('*** Date today ->' + new Date());
+          utils.log('*** This post has MORE than 15 minutes');
         }else{
-          utils.log('*** I can´t vote');
-          utils.log('*** Add minutes ->' + new Date(AddMinutesToDate(new Date(post.created + 'Z'),15)));
-          utils.log('*** Date today ->' + new Date());
+          utils.log('*** This post has LESS than 15 minutes');
           continue;
         }
 
@@ -235,17 +231,18 @@ function sendVote(name, post, retries) {
     steem.api.getAccounts(['steemitportugal'], function(err, result) {
      var received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
 
-     var vote_weight_number = (member.vesting_shares / received_vesting_shares) * 10000;
+     var weight_delegator_vote = (member.vesting_shares / received_vesting_shares) * 10000;
      utils.log( 'SP Value Member: ' + member.vesting_shares  );
      utils.log( 'Received Vesting Shares: ' + received_vesting_shares  );
-     utils.log( 'Vote Weight: ' + vote_weight_number  );
-     //Member delegator have 5% vote weight more % of your delegation
-     config.vote_weight = vote_weight_number + 500;
+     utils.log( 'Vote Weight: ' + weight_delegator_vote  );
+
+     //Member delegator have community % vote weight more % of your delegation
+     config.vote_weight = weight_delegator_vote + config.member_weight;
     });
 
   }else{
-    //Member not delegator have 5% vote weight
-    config.vote_weight = 500;
+    //Member not delegator have % vote weight
+    config.vote_weight = config.member_weight;
   }
 
   steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, config.vote_weight, function (err, result) {
@@ -400,7 +397,7 @@ function getMembersPosts(member) {
         // Is this post in available daily auto vote
         var auto_vote = 0;
         if( member.last_day == today){
-          utils.log('*** Member ' + member.name + 'already had a vote today ***');
+          utils.log('*** Member ' + member.name + ' already had a vote today ***');
           auto_vote = member.auto_vote;
           return;
         }else{
@@ -426,7 +423,6 @@ function getMembersPosts(member) {
 
   // Save the updated list of delegators to disk
   updateMember(member.name,0, member.vesting_shares, member.last_day, member.auto_vote);
-  utils.log('*** passou aqui: ' + member.name);
 }
 
 function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
