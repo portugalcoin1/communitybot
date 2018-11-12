@@ -166,10 +166,10 @@ function voteNext() {
 
         var now = new Date();
         // Make sure the post is less or more than 15 minutes old
-        if((new Date(AddMinutesToDate(new Date(post.created + 'Z'),15))) < new Date()) {
-          utils.log('*** This post has MORE than 15 minutes');
+        if((new Date(AddMinutesToDate(new Date(post.created + 'Z'),config.minutes_vote))) < new Date()) {
+          utils.log('*** This post has MORE than '+ config.minutes_vote +' minutes');
         }else{
-          utils.log('*** This post has LESS than 15 minutes');
+          utils.log('*** This post has LESS than '+ config.minutes_vote +' minutes');
           continue;
         }
 
