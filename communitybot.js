@@ -56,7 +56,8 @@ if (fs.existsSync('members.json')) {
 }
 
 // Schedule to run every minute
-setInterval(startProcess, 60 * 1000);
+//setInterval(startProcess, 60 * 1000);
+setInterval(startProcess, 10 * 1000);
 
 function startProcess() {
   // Load the settings from the config file each time so we can pick up any changes
