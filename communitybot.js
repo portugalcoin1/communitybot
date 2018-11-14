@@ -443,9 +443,9 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
     member.vesting_shares = vesting_shares;
 
   // Has the member delegated the full amount to the bot?
-  member.full_delegation = member.vesting_shares >= config.membership.full_delegation_vests;
+  //member.full_delegation = member.vesting_shares >= config.membership.full_delegation_vests;
 
-  if(!member.full_delegation) {
+  /*if(!member.full_delegation) {
     // Has the member delegated the minimum amount to the bot?
     var delegation = member.vesting_shares >= config.membership.delegation_vests;
 
@@ -463,7 +463,7 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
 
     utils.log('Member ' + name + ' valid through: ' + member.valid_thru);
 
-  } else
+  } else*/
 
   saveMembers();
 }
