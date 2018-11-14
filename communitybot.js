@@ -442,36 +442,13 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
   if(vesting_shares >= 0)
     member.vesting_shares = vesting_shares;
 
-  // Has the member delegated the full amount to the bot?
-  //member.full_delegation = member.vesting_shares >= config.membership.full_delegation_vests;
-
-  /*if(!member.full_delegation) {
-    // Has the member delegated the minimum amount to the bot?
-    var delegation = member.vesting_shares >= config.membership.delegation_vests;
-
-    // Get the date that the membership is currently valid through.
-    var valid_thru = new Date(Math.max(new Date(member.valid_thru), new Date(config.membership.start_date), new Date()));
-
-    // Get the dues amount based on whether or not they are a delegator
-    var dues = (config.membership.dues_steem_no_delegation == 0 || delegation) ? config.membership.dues_steem : config.membership.dues_steem_no_delegation;
-
-    // Calculate how much longer they have paid for.
-    var extension = payment / dues * config.membership.membership_period_days * 24 * 60 * 60 * 1000;
-
-    // Update their membership record.
-    member.valid_thru = new Date(valid_thru.valueOf() + extension).toISOString();
-
-    utils.log('Member ' + name + ' valid through: ' + member.valid_thru);
-
-  } else*/
-
   saveMembers();
 }
 
 function sponsorMember(sponsor, user, amount) {
   var member = members.find(m => m.name == sponsor);
 
-  if(member && member.vesting_shares >= config.membership.full_delegation_vests) {
+  if(member) {
     // Subtract the sponsorship amount from the sponsor
     updateMember(member.name, 0, member.vesting_shares - config.membership.full_delegation_vests, member.last_day, member.auto_vote);
 
