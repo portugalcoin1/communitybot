@@ -388,7 +388,7 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
             utils.log('Entrou: ' + members.members[i].name);
       }
   }
-
+  utils.log('Save JSON member: ' + name);
   saveMembers();
 }
 
