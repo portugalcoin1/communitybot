@@ -206,9 +206,9 @@ function voteNext() {
 						continue;
 					}
 				}
-
-        sendVote(member.name, post, 0);
         getMembersPosts(member);
+        sendVote(member.name, post, 0);
+
 				break;
 			}
 
