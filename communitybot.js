@@ -382,9 +382,10 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
     //Update json file member
     for (i in members.members) {
       for (j in members.members[i].name) {
-        if(members_json.members[i].name == member.name)
-          members_json.members[i].last_day = last_day;
-          members_json.members[i].auto_vote = auto_vote;
+        if(members.members[i].name == member.name)
+          members.members[i].last_day = last_day;
+          members.members[i].auto_vote = auto_vote;
+            utils.log('Entrou: ' + members.members[i].name);
       }
   }
 
