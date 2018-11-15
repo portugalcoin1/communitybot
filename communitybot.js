@@ -411,13 +411,15 @@ function saveMembers( name, vesting_shares, last_day, auto_vote ) {
 
   //Update json file member
   for (i in members) {
-    utils.log('Entrou: ');
     for (j in members[i].name) {
 
-      if(members[i].name == name)
+      if(members[i].name == name){
+        utils.log('Entrou name: ' + members[i].name);
         members[i].last_day = last_day;
         members[i].auto_vote = auto_vote;
-        utils.log('Entrou: ' + members[i].name);
+        utils.log('Entrou autovote: ' + members[i].auto_vote);
+      }
+
     }
  }
 
