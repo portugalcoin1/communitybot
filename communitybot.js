@@ -85,8 +85,6 @@ function startProcess() {
       voteNext();
     }
 
-    //getTransactions();
-
     // Save the state of the bot to disk.
     saveState();
   } else if(skip)
@@ -311,67 +309,6 @@ function resteem(author, permlink) {
   });
 }
 
-/*function getTransactions() {
-  var num_trans = 50;
-
-  // If this is the first time the bot is ever being run, start with just the most recent transaction
-  if (first_load && last_trans == 0) {
-    utils.log('First run - starting with last transaction on account.');
-    num_trans = 1;
-  }
-
-  // If this is the first time the bot is run after a restart get a larger list of transactions to make sure none are missed
-  if (first_load && last_trans > 0) {
-    utils.log('First run - loading all transactions since bot was stopped.');
-    num_trans = 1000;
-  }
-
-  steem.api.getAccountHistory(account.name, -1, num_trans, function (err, result) {
-    first_load = false;
-
-    if (err || !result) {
-      utils.log(err, result);
-      return;
-    }
-
-    result.forEach(function (trans) {
-      var op = trans[1].op;
-
-      // Check that this is a new transaction that we haven't processed already
-      if (trans[0] > last_trans) {
-
-        // We only care about transfers to the bot
-        if (op[0] == 'transfer' && op[1].to == account.name) {
-          var amount = parseFloat(op[1].amount);
-          var currency = utils.getCurrency(op[1].amount);
-          utils.log("Incoming Payment! From: " + op[1].from + ", Amount: " + op[1].amount + ", memo: " + op[1].memo);
-
-          if(currency == 'STEEM' && amount >= config.membership.dues_steem) {
-            // Update member info
-            updateMember(op[1].from, amount, -1, 0, 0);
-          }
-
-          // Check if a user is sponsoring another user with their delegation
-          if(op[1].memo.startsWith('$sponsor')) {
-            var user = op[1].memo.substr(op[1].memo.indexOf('@') + 1);
-            sponsorMember(op[1].from, user, amount);
-          }
-
-        } else if (op[0] == 'delegate_vesting_shares' && op[1].delegatee == account.name) {
-
-          // Update member info
-          updateMember(op[1].delegator, 0, parseFloat(op[1].vesting_shares), 0, 0);
-
-          utils.log('*** Delegation Update - ' + op[1].delegator + ' has delegated ' + op[1].vesting_shares);
-        }
-
-        // Save the ID of the last transaction that was processed.
-        last_trans = trans[0];
-      }
-    });
-  });
-}*/
-
 function getMembersPosts(member) {
 
     // Get this delegator account history
@@ -445,25 +382,6 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
 
   saveMembers();
 }
-
-/*function sponsorMember(sponsor, user, amount) {
-  var member = members.find(m => m.name == sponsor);
-
-  if(member) {
-    // Subtract the sponsorship amount from the sponsor
-    updateMember(member.name, 0, member.vesting_shares - config.membership.full_delegation_vests, member.last_day, member.auto_vote);
-
-    member.sponsoring.push(user);
-
-    // Add it to the new member
-    updateMember(user, 0, config.membership.full_delegation_vests, 0, 0);
-
-    var new_member = members.find(m => m.name == user);
-
-    if(new_member)
-      new_member.sponsor = sponsor;
-  }
-}*/
 
 function saveState() {
   var state = {
