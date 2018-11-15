@@ -374,10 +374,19 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
     utils.log('Added new member: ' + name);
   }
 
-  member.total_dues += payment;
+  //member.total_dues += payment;
 
   if(vesting_shares >= 0)
     member.vesting_shares = vesting_shares;
+
+    //Update json file member
+    for (i in members.members) {
+      for (j in members.members[i].name) {
+        if(members_json.members[i].name == member.name)
+          members_json.members[i].last_day = last_day;
+          members_json.members[i].auto_vote = auto_vote;
+      }
+  }
 
   saveMembers();
 }
