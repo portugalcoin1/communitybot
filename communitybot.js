@@ -379,17 +379,7 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
   if(vesting_shares >= 0)
     member.vesting_shares = vesting_shares;
 
-    //Update json file member
-    for (i in members.members) {
-      for (j in members.members[i].name) {
-        if(members.members[i].name == member.name)
-          members.members[i].last_day = last_day;
-          members.members[i].auto_vote = auto_vote;
-            utils.log('Entrou: ' + members.members[i].name);
-      }
-  }
-  utils.log('Save JSON member: ' + name);
-  saveMembers();
+  saveMembers(name, vesting_shares, last_day, auto_vote);
 }
 
 function saveState() {
@@ -415,7 +405,20 @@ function loadConfig() {
 	});
 }
 
-function saveMembers() {
+function saveMembers( name, vesting_shares, last_day, auto_vote ) {
+
+  utils.log('New save JSON member: ' + name);
+
+  //Update json file member
+  for (i in members.members) {
+    for (j in members.members[i].name) {
+      if(members.members[i].name == members.name)
+        members.members[i].last_day = last_day;
+        members.members[i].auto_vote = auto_vote;
+        utils.log('Entrou: ' + members.members[i].name);
+    }
+ }
+
   // Save the members list to disk
   fs.writeFile('members.json', JSON.stringify({ members: members }), function (err) {
     if (err)
