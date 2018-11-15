@@ -85,7 +85,7 @@ function startProcess() {
       voteNext();
     }
 
-    getTransactions();
+    //getTransactions();
 
     // Save the state of the bot to disk.
     saveState();
@@ -310,7 +310,7 @@ function resteem(author, permlink) {
   });
 }
 
-function getTransactions() {
+/*function getTransactions() {
   var num_trans = 50;
 
   // If this is the first time the bot is ever being run, start with just the most recent transaction
@@ -369,7 +369,7 @@ function getTransactions() {
       }
     });
   });
-}
+}*/
 
 function getMembersPosts(member) {
 
@@ -445,7 +445,7 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
   saveMembers();
 }
 
-function sponsorMember(sponsor, user, amount) {
+/*function sponsorMember(sponsor, user, amount) {
   var member = members.find(m => m.name == sponsor);
 
   if(member) {
@@ -462,7 +462,7 @@ function sponsorMember(sponsor, user, amount) {
     if(new_member)
       new_member.sponsor = sponsor;
   }
-}
+}*/
 
 function saveState() {
   var state = {
