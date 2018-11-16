@@ -207,7 +207,7 @@ function voteNext() {
 				}
 
         sendVote(member.name, post, 0);
-        //getMembersPosts(member);
+        getMembersPosts(member);
 				break;
 			}
 
@@ -260,7 +260,6 @@ function sendVote(name, post, retries) {
       }
     }
   });
-  getMembersPosts(member);
 }
 
 function sendComment(parentAuthor, parentPermlink) {
@@ -406,8 +405,6 @@ function loadConfig() {
 }
 
 function saveMembers() {
-
-  utils.log('New save JSON member: ' + name);
 
   // Save the members list to disk
   fs.writeFile('members.json', JSON.stringify({ members: members }), function (err) {
