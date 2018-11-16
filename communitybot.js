@@ -56,7 +56,6 @@ if (fs.existsSync('members.json')) {
 }
 
 // Schedule to run every minute
-//setInterval(startProcess, 60 * 1000);
 setInterval(startProcess, 10 * 1000);
 
 function startProcess() {
@@ -208,7 +207,7 @@ function voteNext() {
 				}
 
         sendVote(member.name, post, 0);
-        getMembersPosts(member);
+        //getMembersPosts(member);
 				break;
 			}
 
@@ -261,6 +260,7 @@ function sendVote(name, post, retries) {
       }
     }
   });
+  getMembersPosts(member);
 }
 
 function sendComment(parentAuthor, parentPermlink) {
@@ -379,7 +379,7 @@ function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
   if(vesting_shares >= 0)
     member.vesting_shares = vesting_shares;
 
-  saveMembers(name, vesting_shares, last_day, auto_vote);
+  saveMembers();
 }
 
 function saveState() {
@@ -405,23 +405,9 @@ function loadConfig() {
 	});
 }
 
-function saveMembers( name, vesting_shares, last_day, auto_vote ) {
+function saveMembers() {
 
   utils.log('New save JSON member: ' + name);
-
-  //Update json file member
-  /*for (i in members) {
-    for (j in members[i].name) {
-
-      if(members[i].name == name){
-        utils.log('Entrou name: ' + members[i].name);
-        members[i].last_day = last_day;
-        members[i].auto_vote = auto_vote;
-        utils.log('Entrou autovote: ' + members[i].auto_vote);
-      }
-
-    }
- }*/
 
   // Save the members list to disk
   fs.writeFile('members.json', JSON.stringify({ members: members }), function (err) {
