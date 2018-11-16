@@ -226,7 +226,7 @@ function sendVote(name, post, retries) {
   if(member.vesting_shares > 0){
 
     //Total de SP do bot
-    steem.api.getAccounts(['steemitportugal'], function(err, result) {
+    steem.api.getAccounts(['inesisasantos'], function(err, result) {
      var received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
 
      var weight_delegator_vote = (member.vesting_shares / received_vesting_shares) * 10000;
