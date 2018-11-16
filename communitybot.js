@@ -206,9 +206,9 @@ function voteNext() {
 						continue;
 					}
 				}
-        getMembersPosts(member);
-        sendVote(member.name, post, 0);
 
+        sendVote(member.name, post, 0);
+        getMembersPosts(member);
 				break;
 			}
 
@@ -410,7 +410,7 @@ function saveMembers( name, vesting_shares, last_day, auto_vote ) {
   utils.log('New save JSON member: ' + name);
 
   //Update json file member
-  for (i in members) {
+  /*for (i in members) {
     for (j in members[i].name) {
 
       if(members[i].name == name){
@@ -421,7 +421,7 @@ function saveMembers( name, vesting_shares, last_day, auto_vote ) {
       }
 
     }
- }
+ }*/
 
   // Save the members list to disk
   fs.writeFile('members.json', JSON.stringify({ members: members }), function (err) {
