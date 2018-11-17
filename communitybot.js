@@ -246,12 +246,14 @@ function sendVote(name, post, retries) {
      //Member delegator have community % vote weight more % of your delegation
      config.vote_weight = weight_delegator_vote + config.member_weight;
      vote_members = weight_delegator_vote + config.member_weight;
+     utils.log( 'Vote members delegator' + vote_members);
     });
 
   }else{
     //Member not delegator have % vote weight
     config.vote_weight = config.member_weight;
     vote_members = config.member_weight;
+    utils.log( 'Vote members delegator not delegator' + vote_members);
   }
 
   steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
