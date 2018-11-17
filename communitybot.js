@@ -371,6 +371,7 @@ function getMembersPosts(member) {
 function updateMember(name, payment, vesting_shares, last_day, auto_vote) {
 
   var member = members.find(m => m.name == name);
+  utils.log('updateMember');
 
   // Add a new member if none is found
   if (!member) {
