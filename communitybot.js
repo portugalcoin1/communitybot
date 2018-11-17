@@ -233,6 +233,7 @@ function sendVote(name, post, retries) {
   //If it is not delegator receives 10% of the value. - portugalcoin
   if(member.vesting_shares > 0){
 
+    var vote_members = 0;
     //Total de SP do bot
     steem.api.getAccounts(['steemitportugal'], function(err, result) {
      var received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
@@ -244,16 +245,18 @@ function sendVote(name, post, retries) {
 
      //Member delegator have community % vote weight more % of your delegation
      config.vote_weight = weight_delegator_vote + config.member_weight;
+     vote_members = weight_delegator_vote + config.member_weight;
     });
 
   }else{
     //Member not delegator have % vote weight
     config.vote_weight = config.member_weight;
+    vote_members = config.member_weight;
   }
 
-  steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, utils.format(config.vote_weight / 100), function (err, result) {
+  steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
     if (!err && result) {
-      utils.log(utils.format(config.vote_weight / 100) + '% vote cast for: ' + post.url);
+      utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
 
 			if(config.comment_location)
 				sendComment(post.author, post.permlink);
