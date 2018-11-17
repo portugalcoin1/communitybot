@@ -251,7 +251,7 @@ function sendVote(name, post, retries) {
     config.vote_weight = config.member_weight;
   }
 
-  steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, config.vote_weight, function (err, result) {
+  steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, utils.format(config.vote_weight / 100), function (err, result) {
     if (!err && result) {
       utils.log(utils.format(config.vote_weight / 100) + '% vote cast for: ' + post.url);
 
