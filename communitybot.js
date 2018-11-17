@@ -79,7 +79,7 @@ function startProcess() {
       utils.log('Voting Power: ' + utils.format(vp / 100) + '% | Time until next vote: ' + utils.toTimer(utils.timeTilFullPower(vp)));
 
     // We are at 60% voting power - time to vote!
-    if (vp >= 6000) {
+    if (vp >= 8000) {
       skip = true;
       voteNext();
     }
@@ -234,7 +234,7 @@ function sendVote(name, post, retries) {
   if(member.vesting_shares > 0){
 
     //Total de SP do bot
-    steem.api.getAccounts(['inesisasantos'], function(err, result) {
+    steem.api.getAccounts(['steemitportugal'], function(err, result) {
      var received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
 
      var weight_delegator_vote = (member.vesting_shares / received_vesting_shares) * 10000;
