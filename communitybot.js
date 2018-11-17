@@ -171,6 +171,12 @@ function voteNext() {
           continue;
         }
 
+        // Make sure the post is today
+        if(new Date(post.created).getDate != new Date().getDate){
+          utils.log('This post was not made today: ' + post.url);
+					continue;
+        }
+
 				// Make sure the post is less than 1 days old
 				if((new Date() - new Date(post.created + 'Z')) >= (1 * 24 * 60 * 60 * 1000)) {
 					utils.log('This post is too old for a vote: ' + post.url);
