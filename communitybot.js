@@ -233,9 +233,10 @@ function sendVote(name, post, retries) {
   //If it is not delegator receives 10% of the value. - portugalcoin
   if(member.vesting_shares > 0){
 
-    var vote_members = 0;
+
     //Total de SP do bot
     steem.api.getAccounts(['steemitportugal'], function(err, result) {
+    var vote_members = 0;
      var received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
 
      var weight_delegator_vote = (member.vesting_shares / received_vesting_shares) * 10000;
@@ -246,17 +247,58 @@ function sendVote(name, post, retries) {
      //Member delegator have community % vote weight more % of your delegation
      config.vote_weight = weight_delegator_vote + config.member_weight;
      vote_members = weight_delegator_vote + config.member_weight;
-     utils.log( 'Vote members delegator' + vote_members);
+     utils.log( 'Vote members delegator: ' + vote_members);
+
+     //VOTE
+     steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
+       if (!err && result) {
+         utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
+
+   			if(config.comment_location)
+   				sendComment(post.author, post.permlink);
+       } else {
+         utils.log(err, result);
+
+         // Try again one time on error
+         if (retries < 1)
+           sendVote(post, retries + 1);
+         else {
+           utils.log('============= Vote transaction failed two times for: ' + post.url + ' ===============');
+         }
+       }
+     });
+
+
     });
 
   }else{
+    var vote_members = 0;
     //Member not delegator have % vote weight
     config.vote_weight = config.member_weight;
     vote_members = config.member_weight;
-    utils.log( 'Vote members delegator not delegator' + vote_members);
+    utils.log( 'Vote members delegator not delegator: ' + vote_members);
+
+    //VOTE
+    steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
+      if (!err && result) {
+        utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
+
+  			if(config.comment_location)
+  				sendComment(post.author, post.permlink);
+      } else {
+        utils.log(err, result);
+
+        // Try again one time on error
+        if (retries < 1)
+          sendVote(post, retries + 1);
+        else {
+          utils.log('============= Vote transaction failed two times for: ' + post.url + ' ===============');
+        }
+      }
+    });
   }
 
-  steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
+  /*steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
     if (!err && result) {
       utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
 
@@ -272,7 +314,7 @@ function sendVote(name, post, retries) {
         utils.log('============= Vote transaction failed two times for: ' + post.url + ' ===============');
       }
     }
-  });
+  });*/
 }
 
 function sendComment(parentAuthor, parentPermlink) {
