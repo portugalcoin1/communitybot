@@ -250,7 +250,7 @@ function sendVote(name, post, retries) {
      utils.log( 'Vote members delegator: ' + vote_members);
 
      //VOTE
-     steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
+     steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, parseInt(vote_members) , function (err, result) {
        if (!err && result) {
          utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
 
@@ -279,7 +279,7 @@ function sendVote(name, post, retries) {
     utils.log( 'Vote members delegator not delegator: ' + vote_members);
 
     //VOTE
-    steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
+    steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, parseInt(vote_members) , function (err, result) {
       if (!err && result) {
         utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
 
