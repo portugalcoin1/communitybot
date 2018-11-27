@@ -275,7 +275,7 @@ function sendVote(name, post, retries) {
     var vote_members = 0;
     //Member not delegator have % vote weight
     config.vote_weight = config.member_weight;
-    vote_members = config.member_weight;
+    vote_members = config.member_weight_no_delegator;
     utils.log( 'Vote members delegator not delegator: ' + vote_members);
 
     //VOTE
@@ -297,24 +297,6 @@ function sendVote(name, post, retries) {
       }
     });
   }
-
-  /*steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, vote_members , function (err, result) {
-    if (!err && result) {
-      utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
-
-			if(config.comment_location)
-				sendComment(post.author, post.permlink);
-    } else {
-      utils.log(err, result);
-
-      // Try again one time on error
-      if (retries < 1)
-        sendVote(post, retries + 1);
-      else {
-        utils.log('============= Vote transaction failed two times for: ' + post.url + ' ===============');
-      }
-    }
-  });*/
 }
 
 function sendComment(parentAuthor, parentPermlink) {
