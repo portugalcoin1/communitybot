@@ -255,7 +255,7 @@ function sendVote(name, post, retries) {
          utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
 
    			if(config.comment_location)
-   				sendComment(post.author, post.permlink);
+   				sendComment(post.author, post.permlink, vote_members);
        } else {
          utils.log(err, result);
 
@@ -284,7 +284,7 @@ function sendVote(name, post, retries) {
         utils.log(utils.format(vote_members / 100) + '% vote cast for: ' + post.url);
 
   			if(config.comment_location)
-  				sendComment(post.author, post.permlink);
+  				sendComment(post.author, post.permlink, vote_members);
       } else {
         utils.log(err, result);
 
@@ -299,7 +299,7 @@ function sendVote(name, post, retries) {
   }
 }
 
-function sendComment(parentAuthor, parentPermlink) {
+function sendComment(parentAuthor, parentPermlink, vote_members) {
   var content = null;
 
   content = fs.readFileSync(config.comment_location, "utf8");
@@ -311,7 +311,7 @@ function sendComment(parentAuthor, parentPermlink) {
     var permlink = 're-' + parentAuthor.replace(/\./g, '') + '-' + parentPermlink + '-' + new Date().toISOString().replace(/-|:|\./g, '').toLowerCase();
 
     // Replace variables in the promotion content
-    content = content.replace(/\{weight\}/g, utils.format(config.vote_weight / 100)).replace(/\{botname\}/g, config.account);
+    content = content.replace(/\{weight\}/g, utils.format(vote_members / 100)).replace(/\{botname\}/g, config.account);
 
     // Broadcast the comment
     steem.broadcast.comment(config.posting_key, parentAuthor, parentPermlink, account.name, permlink, permlink, content, '{"app":"communitybot/' + version + '"}', function (err, result) {
