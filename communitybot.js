@@ -230,24 +230,41 @@ function sendVote(name, post, retries) {
 
   var member = members.find(m => m.name == name);
 
-  //If it is not delegator receives 10% of the value. - portugalcoin
+  //If is delegator receives 10% of the value. - portugalcoin
   if(member.vesting_shares > 0){
-
 
     //Total de SP do bot
     steem.api.getAccounts(['steemitportugal'], function(err, result) {
-    var vote_members = 0;
+     var vote_members = 0;
      var received_vesting_shares = result[0].received_vesting_shares.split(' ')[0];
 
      var weight_delegator_vote = (member.vesting_shares / received_vesting_shares) * 10000;
      utils.log( 'SP Value Member: ' + member.vesting_shares  );
      utils.log( 'Received Vesting Shares: ' + received_vesting_shares  );
-     utils.log( 'Vote Weight: ' + weight_delegator_vote  );
+     //utils.log( 'Vote Weight: ' + weight_delegator_vote  );
 
-     //Member delegator have community % vote weight more % of your delegation
-     config.vote_weight = weight_delegator_vote + config.member_weight;
-     vote_members = weight_delegator_vote + config.member_weight;
-     utils.log( 'Vote members delegator: ' + vote_members);
+     //Get SteemPower of user delegate
+     steem.api.getDynamicGlobalProperties((err, result) => {
+        const totalSteem = Number(result.total_vesting_fund_steem.split(' ')[0]);
+        const totalVests = Number(result.total_vesting_shares.split(' ')[0]);
+        const userVests = Number(member.vesting_shares);
+
+        totaldelegate =  totalSteem * (userVests / totalVests)
+
+        //Table Power delegate
+        if(parseInt(totaldelegate) > 1000){
+          //30%
+          vote_members = weight_delegator_vote + config.member_weight_master;
+          utils.log( 'Vote MASTER delegator: ' + vote_members);
+        }else if(parseInt(totaldelegate) > 500){
+          //20%
+          vote_members = weight_delegator_vote + config.member_weight_super;
+          utils.log( 'Vote SUPER delegator: ' + vote_members);
+        }else{
+          //10%
+          vote_members = weight_delegator_vote + config.member_weight;
+          utils.log( 'Vote MEMBER delegator: ' + vote_members);
+        }
 
      //VOTE
      steem.broadcast.vote(config.posting_key, account.name, post.author, post.permlink, parseInt(vote_members) , function (err, result) {
@@ -266,10 +283,11 @@ function sendVote(name, post, retries) {
            utils.log('============= Vote transaction failed two times for: ' + post.url + ' ===============');
          }
        }
-     });
+     });//.steem.broadcast.vote
 
+    });//.steem.api.getDynamicGlobalProperties
 
-    });
+   });//.steem.api.getAccounts
 
   }else{
     var vote_members = 0;
